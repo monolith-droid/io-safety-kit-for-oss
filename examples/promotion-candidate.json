@@ -37,7 +37,7 @@
   },
   "promotion_plan": {
     "target": "release",
-    "maintainer_review": "Open a public issue, implement through PR, run CI, then release as v0.1.3.",
+    "maintainer_review": "Open a public issue, implement through PR, run CI, then release in the next tagged version.",
     "external_publish": false
   }
 }

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.1.4
+
 - Generalize the public project name to I/O Safety Kit for OSS.
 - Position Codex as the first reference workflow rather than the project
   boundary.
