@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from codex_maintainer_safety_kit.pr_review import render_pr_review, write_pr_review
+from io_safety_kit.pr_review import render_pr_review, write_pr_review
 
 
 ROOT = Path(__file__).resolve().parents[1]

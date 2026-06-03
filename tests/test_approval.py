@@ -2,7 +2,7 @@ import json
 import unittest
 from pathlib import Path
 
-from codex_maintainer_safety_kit.approval import evaluate_gate, validate_manifest
+from io_safety_kit.approval import evaluate_gate, validate_manifest
 
 
 ROOT = Path(__file__).resolve().parents[1]

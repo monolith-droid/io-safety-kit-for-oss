@@ -1,6 +1,6 @@
 # Downstream Dogfooding
 
-Codex Maintainer Safety Kit is intended to be useful in real maintainer
+I/O Safety Kit for OSS is intended to be useful in real maintainer
 workflows without requiring private projects to publish their internal
 automation. The recommended pattern is a downstream adapter: a local wrapper
 that uses this public core, stores local evidence, and keeps private policy
@@ -8,14 +8,14 @@ outside the OSS repository.
 
 ## Loop
 
-1. Use the public `cmsk` CLI from a private or organization-specific adapter.
+1. Use the public `iosk` CLI from a private or organization-specific adapter.
 2. Keep the adapter report-only unless a separate project policy explicitly
    allows execution.
 3. Store local reports where the maintainer can review them.
 4. Turn generic findings into public issues or tests.
 5. Keep private paths, secrets, approval IDs, service names, and local operating
    details out of public artifacts.
-6. Run `cmsk promotion-check` before public promotion when the finding came from
+6. Run `iosk promotion-check` before public promotion when the finding came from
    private or downstream work.
 
 This lets maintainers improve the public tool from real work while preserving a

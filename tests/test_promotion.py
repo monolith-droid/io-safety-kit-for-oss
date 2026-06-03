@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from codex_maintainer_safety_kit.promotion import (
+from io_safety_kit.promotion import (
     evaluate_promotion_candidate,
     load_candidate,
     render_promotion_report,

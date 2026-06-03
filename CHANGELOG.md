@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- Generalize the public project name to I/O Safety Kit for OSS.
+- Position Codex as the first reference workflow rather than the project
+  boundary.
+- Add `iosk` as the preferred console command while retaining `msk` and `cmsk`
+  for v0.1.x compatibility.
+- Update public example schema versions to the `iosk.*` namespace.
+- Remove the application-form draft from the public documentation set.
+
 ## v0.1.3
 
 - Add `cmsk promotion-check` for privacy-safe public promotion candidates.

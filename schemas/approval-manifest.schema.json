@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/monolith-droid/codex-maintainer-safety-kit/schemas/approval-manifest.schema.json",
-  "title": "Codex Maintainer Safety Kit Approval Manifest",
+  "title": "I/O Safety Kit for OSS Approval Manifest",
   "type": "object",
   "additionalProperties": true,
   "required": [
@@ -18,7 +18,7 @@
   "properties": {
     "schema_version": {
       "type": "string",
-      "const": "cmsk.approval.v1"
+      "const": "iosk.approval.v1"
     },
     "operation": {
       "type": "string",

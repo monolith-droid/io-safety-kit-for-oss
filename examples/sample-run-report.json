@@ -1,6 +1,6 @@
 {
   "generated_at": "2026-06-04T00:00:00+00:00",
-  "mode": "codex_maintainer_safety_kit_report_only_v1",
+  "mode": "io_safety_kit_report_only_v1",
   "job_id": "sample-maintainer-handoff",
   "repository": "monolith-droid/codex-maintainer-safety-kit",
   "status": "job_plan_ready",

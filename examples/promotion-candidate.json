@@ -1,5 +1,5 @@
 {
-  "schema_version": "cmsk.promotion.v1",
+  "schema_version": "iosk.promotion.v1",
   "candidate_id": "safe-output-loop-docs-v1",
   "source": {
     "kind": "private_downstream",

@@ -1,7 +1,7 @@
 # Security Model
 
-Codex Maintainer Safety Kit assumes that useful AI-assisted maintenance needs a
-visible boundary between planning and side effects.
+I/O Safety Kit for OSS assumes that useful AI-assisted maintenance needs visible
+boundaries around both input scope and output publication.
 
 ## Default State
 
@@ -23,6 +23,19 @@ review systems where approval is auditable.
 The gate checks that the manifest is structurally valid and says approval is
 present. It does not replace GitHub permissions, branch protection, code owner
 review, or human judgment.
+
+## Input Boundary
+
+An agent workflow should begin from declared maintainer intent: repository,
+operation, targets, allowed actions, approval state, and output destination. The
+MVP treats anything outside that manifest as out of scope.
+
+## Output Boundary
+
+Generated reports and promotion candidates are not public artifacts by default.
+They should remain local until private context has been removed, examples have
+been made synthetic, and a maintainer can review the result in public without
+revealing secrets, personal data, local paths, or organization-only policy.
 
 ## Blocked Action Keywords
 
