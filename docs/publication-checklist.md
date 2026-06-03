@@ -9,6 +9,7 @@ for OSS application.
 - Run `python -m compileall -q src tests`.
 - Run `cmsk validate --manifest examples/pr-review-manifest.json --json`.
 - Run `cmsk gate --manifest examples/pr-review-manifest.json --json`.
+- Run `cmsk promotion-check --candidate examples/promotion-candidate.json --json`.
 - Run `cmsk run --job examples/maintainer-job.json --json`.
 - Confirm `docs/codex_for_oss_strategy.md` stays local and ignored.
 
@@ -27,6 +28,7 @@ for OSS application.
 - Add JSON Schema validation as an optional dependency.
 - Add a GitHub issue triage report renderer.
 - Add a PR review report renderer.
+- Add safe output promotion checks for private-to-public OSS extraction.
 - Add signed approval manifest design notes.
 - Add eval fixtures for blocked action behavior.
 

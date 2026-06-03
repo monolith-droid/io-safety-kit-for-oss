@@ -9,6 +9,12 @@ from typing import Any
 from .approval import evaluate_gate, load_json, validate_manifest
 from .handoff import load_report, render_handoff, write_handoff
 from .pr_review import render_pr_review, write_pr_review
+from .promotion import (
+    evaluate_promotion_candidate,
+    load_candidate,
+    render_promotion_report,
+    write_promotion_report,
+)
 from .runner import build_run_report, load_job, write_report
 
 
@@ -81,6 +87,22 @@ def cmd_pr_review(args: argparse.Namespace) -> int:
     return 0 if gate.passed else 2
 
 
+def cmd_promotion_check(args: argparse.Namespace) -> int:
+    candidate = load_candidate(args.candidate)
+    result = evaluate_promotion_candidate(candidate)
+    markdown = render_promotion_report(candidate)
+    if args.out:
+        write_promotion_report(markdown, args.out)
+        data = result.to_dict()
+        data["path"] = str(Path(args.out))
+        emit(data, args.json)
+    elif args.json:
+        emit(result.to_dict(), True)
+    else:
+        print(markdown)
+    return 0 if result.passed else 2
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="cmsk",
@@ -124,6 +146,19 @@ def build_parser() -> argparse.ArgumentParser:
         "--json", action="store_true", help="Emit JSON output when writing a file."
     )
     pr_review.set_defaults(func=cmd_pr_review)
+
+    promotion = subparsers.add_parser(
+        "promotion-check",
+        help="Evaluate whether private/downstream output is safe to promote publicly.",
+    )
+    promotion.add_argument(
+        "--candidate", required=True, help="Path to promotion candidate JSON."
+    )
+    promotion.add_argument("--out", default=None, help="Optional Markdown output path.")
+    promotion.add_argument(
+        "--json", action="store_true", help="Emit JSON output instead of Markdown."
+    )
+    promotion.set_defaults(func=cmd_promotion_check)
 
     return parser
 

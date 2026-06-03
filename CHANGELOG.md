@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.1.3
+
+- Add `cmsk promotion-check` for privacy-safe public promotion candidates.
+- Add safe output promotion loop docs, example candidate, and issue template.
+- Add tests for ready and blocked promotion candidates.
+
 ## v0.1.2
 
 - Add a report-only PR review Markdown renderer and CLI command.

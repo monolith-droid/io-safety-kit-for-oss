@@ -4,8 +4,8 @@
 
 Codex Maintainer Safety Kit is a small, fail-closed operations layer for open
 source maintainers who want to use coding agents for pull request review, issue
-triage, release work, and security checks without losing control of side
-effects.
+triage, release work, security checks, and safe publication of AI-assisted
+development output without losing control of side effects.
 
 The current MVP is intentionally report-only. It validates approval manifests,
 checks whether a requested maintainer workflow is inside the approved scope, and
@@ -35,6 +35,7 @@ python -m pip install -e .
 cmsk validate --manifest examples/pr-review-manifest.json --json
 cmsk gate --manifest examples/pr-review-manifest.json --json
 cmsk pr-review --manifest examples/pr-review-manifest.json --out reports/pr-review.md
+cmsk promotion-check --candidate examples/promotion-candidate.json --json
 cmsk run --job examples/maintainer-job.json --json
 cmsk handoff --report examples/sample-run-report.json --out reports/handoff.md
 ```
@@ -89,6 +90,8 @@ cmsk gate --manifest tests/fixtures/blocked_actions/read_secret.json --json
 - `examples/security-audit-manifest.json`: demonstrate a pending approval that
   must fail closed.
 - `examples/maintainer-job.json`: report-only job plan using those manifests.
+- `examples/promotion-candidate.json`: check whether private/downstream output
+  is safe to promote publicly.
 
 ## PR Review Renderer
 
@@ -100,6 +103,20 @@ cmsk pr-review --manifest examples/pr-review-manifest.json --out reports/pr-revi
 
 The report summarizes scope, allowed actions, gate status, blockers, warnings,
 and maintainer next steps. It keeps `GitHub mutation performed` set to `False`.
+
+## Safe Output Promotion
+
+AI-assisted development needs not only safe input, but safe output. CMSK can
+check whether useful private or downstream workflow findings are ready to become
+public OSS artifacts:
+
+```bash
+cmsk promotion-check --candidate examples/promotion-candidate.json --out reports/promotion.md --json
+```
+
+The check fails closed when secrets, personal data, local paths, private context,
+or non-synthetic examples remain in the candidate. See [Safe output promotion
+loop](docs/safe-output-promotion-loop.md).
 
 ## Project Status
 
@@ -119,6 +136,7 @@ See:
 - [Security model](docs/security-model.md)
 - [Maintainer workflows](docs/maintainer-workflows.md)
 - [Downstream dogfooding](docs/downstream-dogfooding.md)
+- [Safe output promotion loop](docs/safe-output-promotion-loop.md)
 - [Codex for OSS application draft](docs/codex_for_oss_application_draft.md)
 
 ## Non-Goals
