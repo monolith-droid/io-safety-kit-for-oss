@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.1.6
+
 - Add optional JSON Schema validation for approval manifests via
   `iosk validate --schema`.
 
