@@ -95,10 +95,17 @@ auditable Codex-assisted workflows. The current focus is a small v0.1.x release
 line with examples, CI, issue templates, blocked-action regression fixtures, and
 maintainer automation recipes.
 
+The project is developed through a dogfooding loop: private downstream adapters
+can use the public core in report-only mode, then promote only generic,
+privacy-safe improvements back into this repository as issues, tests, docs, or
+small PRs. This keeps the OSS core reusable without exposing local operations,
+secrets, private paths, or organization-specific policy.
+
 See:
 
 - [Security model](docs/security-model.md)
 - [Maintainer workflows](docs/maintainer-workflows.md)
+- [Downstream dogfooding](docs/downstream-dogfooding.md)
 - [Codex for OSS application draft](docs/codex_for_oss_application_draft.md)
 
 ## Non-Goals
