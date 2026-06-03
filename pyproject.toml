@@ -36,5 +36,13 @@ iosk = "io_safety_kit.cli:main"
 msk = "io_safety_kit.cli:main"
 cmsk = "io_safety_kit.cli:main"
 
+[project.optional-dependencies]
+schema = [
+  "jsonschema>=4.18"
+]
+
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+codex_maintainer_safety_kit = ["schemas/*.json"]

@@ -46,3 +46,8 @@ jobs:
           iosk issue-triage --manifest examples/issue-triage-manifest.json --out reports/issue-triage.md --json
           iosk promotion-check --candidate examples/promotion-candidate.json --json
           iosk run --job examples/maintainer-job.json --json
+
+      - name: Optional schema validation
+        run: |
+          python -m pip install -e ".[schema]"
+          iosk validate --manifest examples/pr-review-manifest.json --schema --json

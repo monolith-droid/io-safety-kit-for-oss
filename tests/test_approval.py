@@ -1,7 +1,10 @@
+import copy
 import json
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
+from codex_maintainer_safety_kit import approval as approval_impl
 from io_safety_kit.approval import evaluate_gate, validate_manifest
 
 
@@ -73,6 +76,63 @@ class ApprovalTests(unittest.TestCase):
         self.assertFalse(gate.passed)
         self.assertTrue(
             any(blocker.startswith("operation_mismatch:") for blocker in gate.blockers)
+        )
+
+    def test_packaged_schema_matches_public_schema(self):
+        packaged_schema = approval_impl.load_approval_manifest_schema()
+        public_schema = json.loads(
+            (ROOT / "schemas" / "approval-manifest.schema.json").read_text(
+                encoding="utf-8"
+            )
+        )
+
+        self.assertEqual(packaged_schema, public_schema)
+
+    def test_schema_validation_falls_back_without_jsonschema(self):
+        manifest = load_example("pr-review-manifest.json")
+
+        with patch.object(
+            approval_impl, "_load_jsonschema_validator", return_value=None
+        ):
+            validation = validate_manifest(manifest, use_schema=True)
+
+        self.assertTrue(validation.passed, validation.blockers)
+        self.assertIn(
+            "jsonschema_not_installed_schema_validation_skipped",
+            validation.warnings,
+        )
+        self.assertEqual(
+            validation.schema_validation,
+            {
+                "requested": True,
+                "available": False,
+                "schema": "schemas/approval-manifest.schema.json",
+                "status": "schema_validation_skipped",
+                "errors": [],
+            },
+        )
+
+    def test_schema_validation_reports_schema_errors_when_available(self):
+        if approval_impl._load_jsonschema_validator() is None:
+            self.skipTest("jsonschema is not installed")
+
+        manifest = copy.deepcopy(load_example("pr-review-manifest.json"))
+        manifest["schema_version"] = "legacy.approval.v1"
+
+        validation = validate_manifest(manifest, use_schema=True)
+        data = validation.to_dict()
+
+        self.assertFalse(validation.passed)
+        self.assertTrue(
+            any(
+                blocker.startswith("schema_error:schema_version:")
+                for blocker in validation.blockers
+            )
+        )
+        self.assertEqual(data["schema_validation"]["status"], "schema_invalid")
+        self.assertEqual(
+            data["schema_validation"]["errors"][0]["path"],
+            "schema_version",
         )
 
 
