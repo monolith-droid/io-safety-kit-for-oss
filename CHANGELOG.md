@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.1.7
+
 - Add a signed approval manifest design note.
 
 ## v0.1.6
