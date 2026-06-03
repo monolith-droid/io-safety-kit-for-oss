@@ -15,6 +15,8 @@ outside the OSS repository.
 4. Turn generic findings into public issues or tests.
 5. Keep private paths, secrets, approval IDs, service names, and local operating
    details out of public artifacts.
+6. Run `cmsk promotion-check` before public promotion when the finding came from
+   private or downstream work.
 
 This lets maintainers improve the public tool from real work while preserving a
 clear boundary between reusable OSS infrastructure and private operations.

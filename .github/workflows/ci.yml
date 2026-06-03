@@ -43,4 +43,5 @@ jobs:
         run: |
           cmsk validate --manifest examples/pr-review-manifest.json --json
           cmsk gate --manifest examples/pr-review-manifest.json --json
+          cmsk promotion-check --candidate examples/promotion-candidate.json --json
           cmsk run --job examples/maintainer-job.json --json

@@ -1,0 +1,43 @@
+{
+  "schema_version": "cmsk.promotion.v1",
+  "candidate_id": "safe-output-loop-docs-v1",
+  "source": {
+    "kind": "private_downstream",
+    "description": "A private downstream adapter revealed a reusable pattern for promoting AI-assisted development output into public OSS."
+  },
+  "summary": "Document and test a privacy-safe promotion loop for turning useful private workflow output into public OSS artifacts.",
+  "public_value": "Other OSS maintainers can use the same checklist to avoid leaking private context when publishing AI-assisted workflow improvements.",
+  "output_artifacts": [
+    {
+      "type": "doc",
+      "path": "docs/safe-output-promotion-loop.md"
+    },
+    {
+      "type": "example",
+      "path": "examples/promotion-candidate.json"
+    },
+    {
+      "type": "test",
+      "path": "tests/test_promotion.py"
+    }
+  ],
+  "privacy_review": {
+    "secrets_removed": true,
+    "personal_data_removed": true,
+    "local_paths_removed": true,
+    "private_context_removed": true,
+    "synthetic_example_used": true,
+    "source_markers": []
+  },
+  "generalization": {
+    "useful_to_other_maintainers": true,
+    "private_names_removed": true,
+    "can_be_tested_in_ci": true,
+    "public_problem_statement": "AI-assisted development needs a safe output process for promoting private workflow findings into public OSS."
+  },
+  "promotion_plan": {
+    "target": "release",
+    "maintainer_review": "Open a public issue, implement through PR, run CI, then release as v0.1.3.",
+    "external_publish": false
+  }
+}

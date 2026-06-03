@@ -1,0 +1,48 @@
+name: Promotion candidate
+description: Propose private/downstream output for privacy-safe public promotion.
+title: "[Promotion]: "
+labels: ["workflow", "safety"]
+body:
+  - type: textarea
+    id: public-problem
+    attributes:
+      label: Public problem statement
+      description: What can another OSS maintainer understand without private context?
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source context
+      description: Describe the source generally. Do not include private paths, names, transcripts, tokens, or service details.
+    validations:
+      required: true
+  - type: textarea
+    id: artifacts
+    attributes:
+      label: Public artifacts
+      description: Which docs, examples, fixtures, schemas, tests, or PRs should be created?
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy-safe extraction
+      options:
+        - label: Secrets, tokens, passwords, and credentials are removed.
+          required: true
+        - label: Personal details and private transcripts are removed.
+          required: true
+        - label: Local absolute paths and private approval IDs are removed.
+          required: true
+        - label: Real data is replaced with synthetic examples or fixtures.
+          required: true
+        - label: The candidate can be tested or reviewed in public CI/docs.
+          required: true
+  - type: textarea
+    id: blocked-output
+    attributes:
+      label: What must stay private?
+      description: Name categories only. Do not paste private data.
+    validations:
+      required: true
