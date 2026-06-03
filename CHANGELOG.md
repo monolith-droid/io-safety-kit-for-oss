@@ -1,7 +1,9 @@
 # Changelog
 
-## Unreleased
+## v0.1.2
 
+- Add a report-only PR review Markdown renderer and CLI command.
+- Add deterministic PR review renderer tests and sample output.
 - Document downstream dogfooding as the project loop for turning private
   maintainer workflows into generic, privacy-safe public improvements.
 

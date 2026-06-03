@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from codex_maintainer_safety_kit.handoff import render_handoff
+from codex_maintainer_safety_kit.handoff import render_handoff, write_handoff
 from codex_maintainer_safety_kit.runner import build_run_report, load_job, write_report
 
 
@@ -42,6 +42,15 @@ class RunnerHandoffTests(unittest.TestCase):
 
         self.assertIn("# Maintainer Handoff", markdown)
         self.assertIn("v0.1.0-maintainer-readiness", markdown)
+
+    def test_write_handoff(self):
+        markdown = "# Maintainer Handoff\n\n- Ready\n"
+
+        with tempfile.TemporaryDirectory() as tmp:
+            path = write_handoff(markdown, Path(tmp) / "handoff.md")
+            written = path.read_text(encoding="utf-8")
+
+        self.assertEqual(written, markdown)
 
 
 if __name__ == "__main__":

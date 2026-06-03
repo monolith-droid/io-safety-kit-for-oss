@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "codex-maintainer-safety-kit"
-version = "0.1.1"
+version = "0.1.2"
 description = "Fail-closed approval manifests and report-only maintainer automation for AI-assisted OSS work."
 readme = "README.md"
 requires-python = ">=3.9"
