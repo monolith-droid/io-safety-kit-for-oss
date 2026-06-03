@@ -11,6 +11,16 @@ read-only actions, and output location. The gate should allow only local review
 reports and draft comments. It should not merge, approve, request changes, push
 commits, or edit branch protection.
 
+Render the report locally:
+
+```bash
+cmsk pr-review --manifest examples/pr-review-manifest.json --out reports/pr-review.md
+```
+
+The PR review renderer summarizes scope, allowed actions, blockers, warnings,
+and maintainer next steps. It is deterministic enough for tests and does not
+post comments or mutate GitHub state.
+
 ## Issue Triage
 
 Issue triage can classify open issues, propose labels, identify duplicates, and

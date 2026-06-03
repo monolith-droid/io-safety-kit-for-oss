@@ -61,5 +61,6 @@ def render_handoff(report: dict[str, Any]) -> str:
 def write_handoff(markdown: str, output: str | Path) -> Path:
     output = Path(output)
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(markdown, encoding="utf-8", newline="\n")
+    with output.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(markdown)
     return output

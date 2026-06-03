@@ -34,6 +34,7 @@ This project gives maintainers a compact pattern:
 python -m pip install -e .
 cmsk validate --manifest examples/pr-review-manifest.json --json
 cmsk gate --manifest examples/pr-review-manifest.json --json
+cmsk pr-review --manifest examples/pr-review-manifest.json --out reports/pr-review.md
 cmsk run --job examples/maintainer-job.json --json
 cmsk handoff --report examples/sample-run-report.json --out reports/handoff.md
 ```
@@ -82,11 +83,23 @@ cmsk gate --manifest tests/fixtures/blocked_actions/read_secret.json --json
 ## Example Workflows
 
 - `examples/pr-review-manifest.json`: scope a Codex-assisted PR review.
+- `examples/pr-review-report.md`: sample report-only PR review output.
 - `examples/issue-triage-manifest.json`: classify and prioritize issues.
 - `examples/release-checklist-manifest.json`: prepare release notes and checks.
 - `examples/security-audit-manifest.json`: demonstrate a pending approval that
   must fail closed.
 - `examples/maintainer-job.json`: report-only job plan using those manifests.
+
+## PR Review Renderer
+
+Render a deterministic local Markdown report without posting to GitHub:
+
+```bash
+cmsk pr-review --manifest examples/pr-review-manifest.json --out reports/pr-review.md --json
+```
+
+The report summarizes scope, allowed actions, gate status, blockers, warnings,
+and maintainer next steps. It keeps `GitHub mutation performed` set to `False`.
 
 ## Project Status
 

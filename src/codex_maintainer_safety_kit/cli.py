@@ -8,6 +8,7 @@ from typing import Any
 
 from .approval import evaluate_gate, load_json, validate_manifest
 from .handoff import load_report, render_handoff, write_handoff
+from .pr_review import render_pr_review, write_pr_review
 from .runner import build_run_report, load_job, write_report
 
 
@@ -62,6 +63,24 @@ def cmd_handoff(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_pr_review(args: argparse.Namespace) -> int:
+    manifest = load_json(args.manifest)
+    gate = evaluate_gate(manifest, operation="pr_review")
+    markdown = render_pr_review(manifest)
+    if args.out:
+        write_pr_review(markdown, args.out)
+        data = {
+            "status": "pr_review_report_written",
+            "path": str(Path(args.out)),
+            "passed": gate.passed,
+            "github_mutation_performed": False,
+        }
+        emit(data, args.json)
+    else:
+        print(markdown)
+    return 0 if gate.passed else 2
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="cmsk",
@@ -89,8 +108,22 @@ def build_parser() -> argparse.ArgumentParser:
     handoff = subparsers.add_parser("handoff", help="Render a maintainer handoff from a run report.")
     handoff.add_argument("--report", required=True, help="Path to report JSON.")
     handoff.add_argument("--out", default=None, help="Optional Markdown output path.")
-    handoff.add_argument("--json", action="store_true", help="Emit JSON output when writing a file.")
+    handoff.add_argument(
+        "--json", action="store_true", help="Emit JSON output when writing a file."
+    )
     handoff.set_defaults(func=cmd_handoff)
+
+    pr_review = subparsers.add_parser(
+        "pr-review", help="Render a report-only PR review Markdown report."
+    )
+    pr_review.add_argument(
+        "--manifest", required=True, help="Path to PR review manifest JSON."
+    )
+    pr_review.add_argument("--out", default=None, help="Optional Markdown output path.")
+    pr_review.add_argument(
+        "--json", action="store_true", help="Emit JSON output when writing a file."
+    )
+    pr_review.set_defaults(func=cmd_pr_review)
 
     return parser
 
