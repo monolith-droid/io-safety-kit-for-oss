@@ -43,5 +43,6 @@ jobs:
         run: |
           iosk validate --manifest examples/pr-review-manifest.json --json
           iosk gate --manifest examples/pr-review-manifest.json --json
+          iosk issue-triage --manifest examples/issue-triage-manifest.json --out reports/issue-triage.md --json
           iosk promotion-check --candidate examples/promotion-candidate.json --json
           iosk run --job examples/maintainer-job.json --json

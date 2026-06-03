@@ -31,6 +31,16 @@ Issue triage can classify open issues, propose labels, identify duplicates, and
 draft maintainer notes. The MVP treats label mutation as outside scope; it
 produces a report that a maintainer can apply manually.
 
+Render the report locally:
+
+```bash
+iosk issue-triage --manifest examples/issue-triage-manifest.json --out reports/issue-triage.md
+```
+
+The issue triage renderer summarizes the issue query, allowed actions, draft
+triage policy, blockers, warnings, and maintainer next steps. It does not apply
+labels, edit milestones, assign issues, or post comments.
+
 ## Release Checklist
 
 Release work can ask an AI coding agent to summarize merged PRs, draft release
