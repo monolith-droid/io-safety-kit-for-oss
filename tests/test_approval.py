@@ -12,6 +12,14 @@ def load_example(name):
     return json.loads((ROOT / "examples" / name).read_text(encoding="utf-8"))
 
 
+def load_blocked_action_fixture(name):
+    return json.loads(
+        (ROOT / "tests" / "fixtures" / "blocked_actions" / name).read_text(
+            encoding="utf-8"
+        )
+    )
+
+
 class ApprovalTests(unittest.TestCase):
     def test_pr_review_manifest_passes_gate(self):
         manifest = load_example("pr-review-manifest.json")
@@ -33,14 +41,29 @@ class ApprovalTests(unittest.TestCase):
         self.assertFalse(gate.passed)
         self.assertIn("approval_not_approved:pending", gate.blockers)
 
-    def test_blocked_action_invalidates_manifest(self):
-        manifest = load_example("pr-review-manifest.json")
-        manifest["allowed_actions"].append("read_secret_values")
+    def test_blocked_action_fixtures_fail_closed(self):
+        cases = [
+            ("read_secret.json", "blocked_action:read_secret_values"),
+            ("force_push.json", "blocked_action:force_push_to_main"),
+            ("change_visibility.json", "blocked_action:change_visibility_public"),
+            (
+                "disable_branch_protection.json",
+                "blocked_action:disable_branch_protection_on_main",
+            ),
+        ]
 
-        validation = validate_manifest(manifest)
+        for fixture_name, expected_blocker in cases:
+            with self.subTest(fixture=fixture_name):
+                manifest = load_blocked_action_fixture(fixture_name)
 
-        self.assertFalse(validation.passed)
-        self.assertIn("blocked_action:read_secret_values", validation.blockers)
+                validation = validate_manifest(manifest)
+                gate = evaluate_gate(manifest)
+
+                self.assertFalse(validation.passed)
+                self.assertIn(expected_blocker, validation.blockers)
+                self.assertFalse(gate.passed)
+                self.assertEqual(gate.status, "gate_blocked_fail_closed")
+                self.assertIn(expected_blocker, gate.blockers)
 
     def test_operation_mismatch_blocks_gate(self):
         manifest = load_example("issue-triage-manifest.json")

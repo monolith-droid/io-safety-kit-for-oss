@@ -44,6 +44,31 @@ You can also run the module directly:
 python -m codex_maintainer_safety_kit validate --manifest examples/pr-review-manifest.json
 ```
 
+## Fail-Closed Example
+
+High-risk actions remain blocked even when a fixture claims approval:
+
+```bash
+cmsk gate --manifest tests/fixtures/blocked_actions/read_secret.json --json
+```
+
+```json
+{
+  "approval_status": "approved",
+  "blockers": [
+    "blocked_action:read_secret_values"
+  ],
+  "operation": "security_audit",
+  "passed": false,
+  "repository": "monolith-droid/codex-maintainer-safety-kit",
+  "risk_level": "high",
+  "status": "gate_blocked_fail_closed",
+  "warnings": [
+    "high_risk_operation_requires_extra_maintainer_review"
+  ]
+}
+```
+
 ## What The Gate Checks
 
 - Required manifest fields are present.
@@ -65,10 +90,10 @@ python -m codex_maintainer_safety_kit validate --manifest examples/pr-review-man
 
 ## Project Status
 
-This repository is being prepared as a public OSS project for maintainers who
-want auditable Codex-assisted workflows. The immediate goal is a clean v0.1.0
-release with examples, CI, issue templates, and a small set of maintainer
-automation recipes.
+This repository is an early public OSS project for maintainers who want
+auditable Codex-assisted workflows. The current focus is a small v0.1.x release
+line with examples, CI, issue templates, blocked-action regression fixtures, and
+maintainer automation recipes.
 
 See:
 
