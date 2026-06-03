@@ -14,7 +14,8 @@ triage, release preparation, dependency review, or handoff generation.
    maintainer workflow directory.
 2. Run `iosk validate --manifest <path> --json`.
 3. Run `iosk gate --manifest <path> --json`.
-4. If the gate passes, produce only report-only output.
+4. If the gate passes, produce only report-only output such as
+   `iosk pr-review` or `iosk issue-triage`.
 5. Never execute commands, read secrets, merge pull requests, change repository
    settings, publish releases, or mutate labels unless a separate explicit
    project policy and approval layer exists.

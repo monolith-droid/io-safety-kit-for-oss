@@ -19,7 +19,7 @@
     }
   ],
   "command": {
-    "name": "codex-issue-triage",
+    "name": "iosk-issue-triage",
     "preview": "Draft labels and priorities for open issues.",
     "execute": false
   },

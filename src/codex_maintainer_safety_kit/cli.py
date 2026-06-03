@@ -8,6 +8,7 @@ from typing import Any
 
 from .approval import evaluate_gate, load_json, validate_manifest
 from .handoff import load_report, render_handoff, write_handoff
+from .issue_triage import render_issue_triage, write_issue_triage
 from .pr_review import render_pr_review, write_pr_review
 from .promotion import (
     evaluate_promotion_candidate,
@@ -87,6 +88,26 @@ def cmd_pr_review(args: argparse.Namespace) -> int:
     return 0 if gate.passed else 2
 
 
+def cmd_issue_triage(args: argparse.Namespace) -> int:
+    manifest = load_json(args.manifest)
+    gate = evaluate_gate(manifest, operation="issue_triage")
+    markdown = render_issue_triage(manifest)
+    if args.out:
+        write_issue_triage(markdown, args.out)
+        data = {
+            "status": "issue_triage_report_written",
+            "path": str(Path(args.out)),
+            "passed": gate.passed,
+            "github_mutation_performed": False,
+            "labels_mutated": False,
+            "comments_posted": False,
+        }
+        emit(data, args.json)
+    else:
+        print(markdown)
+    return 0 if gate.passed else 2
+
+
 def cmd_promotion_check(args: argparse.Namespace) -> int:
     candidate = load_candidate(args.candidate)
     result = evaluate_promotion_candidate(candidate)
@@ -153,6 +174,18 @@ def build_parser() -> argparse.ArgumentParser:
         "--json", action="store_true", help="Emit JSON output when writing a file."
     )
     pr_review.set_defaults(func=cmd_pr_review)
+
+    issue_triage = subparsers.add_parser(
+        "issue-triage", help="Render a report-only issue triage Markdown report."
+    )
+    issue_triage.add_argument(
+        "--manifest", required=True, help="Path to issue triage manifest JSON."
+    )
+    issue_triage.add_argument("--out", default=None, help="Optional Markdown output path.")
+    issue_triage.add_argument(
+        "--json", action="store_true", help="Emit JSON output when writing a file."
+    )
+    issue_triage.set_defaults(func=cmd_issue_triage)
 
     promotion = subparsers.add_parser(
         "promotion-check",

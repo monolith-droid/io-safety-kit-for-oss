@@ -51,6 +51,7 @@ python -m pip install -e .
 iosk validate --manifest examples/pr-review-manifest.json --json
 iosk gate --manifest examples/pr-review-manifest.json --json
 iosk pr-review --manifest examples/pr-review-manifest.json --out reports/pr-review.md
+iosk issue-triage --manifest examples/issue-triage-manifest.json --out reports/issue-triage.md
 iosk promotion-check --candidate examples/promotion-candidate.json --json
 iosk run --job examples/maintainer-job.json --json
 iosk handoff --report examples/sample-run-report.json --out reports/handoff.md
@@ -106,6 +107,7 @@ iosk gate --manifest tests/fixtures/blocked_actions/read_secret.json --json
 - `examples/pr-review-manifest.json`: scope an AI-assisted PR review.
 - `examples/pr-review-report.md`: sample report-only PR review output.
 - `examples/issue-triage-manifest.json`: classify and prioritize issues.
+- `examples/issue-triage-report.md`: sample report-only issue triage output.
 - `examples/release-checklist-manifest.json`: prepare release notes and checks.
 - `examples/security-audit-manifest.json`: demonstrate a pending approval that
   must fail closed.
@@ -123,6 +125,19 @@ iosk pr-review --manifest examples/pr-review-manifest.json --out reports/pr-revi
 
 The report summarizes scope, allowed actions, gate status, blockers, warnings,
 and maintainer next steps. It keeps `GitHub mutation performed` set to `False`.
+
+## Issue Triage Renderer
+
+Render a deterministic local Markdown report without mutating labels, milestones,
+assignments, or comments:
+
+```bash
+iosk issue-triage --manifest examples/issue-triage-manifest.json --out reports/issue-triage.md --json
+```
+
+The report summarizes scope, allowed actions, gate status, draft triage policy,
+blockers, warnings, and maintainer next steps. It keeps `Labels mutated` and
+`Comments posted` set to `False`.
 
 ## Safe Output Promotion
 

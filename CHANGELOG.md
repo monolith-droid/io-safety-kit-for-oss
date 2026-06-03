@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add a report-only issue triage Markdown renderer and CLI command.
+
 ## v0.1.4
 
 - Generalize the public project name to I/O Safety Kit for OSS.
