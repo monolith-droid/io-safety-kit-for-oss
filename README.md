@@ -1,11 +1,15 @@
-# Codex Maintainer Safety Kit
+# I/O Safety Kit for OSS
 
 [![CI](https://github.com/monolith-droid/codex-maintainer-safety-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/monolith-droid/codex-maintainer-safety-kit/actions/workflows/ci.yml)
 
-Codex Maintainer Safety Kit is a small, fail-closed operations layer for open
-source maintainers who want to use coding agents for pull request review, issue
-triage, release work, security checks, and safe publication of AI-assisted
-development output without losing control of side effects.
+I/O Safety Kit for OSS is a small, fail-closed operations layer for open source
+maintainers who want to control both sides of AI-assisted maintenance: what
+coding agents are allowed to take in, and what workflow output is safe to
+publish.
+
+The project is agent-agnostic by design. Codex workflows are the first concrete
+reference use case, while the manifest, gate, report, and promotion patterns are
+intended for OSS maintenance with coding agents more broadly.
 
 The current MVP is intentionally report-only. It validates approval manifests,
 checks whether a requested maintainer workflow is inside the approved scope, and
@@ -28,22 +32,38 @@ This project gives maintainers a compact pattern:
 4. Run only report-only maintainer workflow plans.
 5. Store the output as reviewable evidence.
 
+## I/O Model
+
+Input safety means the agent workflow starts from a declared scope: repository,
+operation, targets, approval state, allowed actions, and blocked high-risk
+verbs. The MVP does not read secrets, scan unrelated repositories, or execute
+commands.
+
+Output safety means the generated workflow result stays reviewable before it
+becomes public. Reports remain local by default, GitHub mutation is disabled,
+and `promotion-check` fails closed when private context, local paths, personal
+data, or non-synthetic examples remain in a candidate.
+
 ## Quick Start
 
 ```bash
 python -m pip install -e .
-cmsk validate --manifest examples/pr-review-manifest.json --json
-cmsk gate --manifest examples/pr-review-manifest.json --json
-cmsk pr-review --manifest examples/pr-review-manifest.json --out reports/pr-review.md
-cmsk promotion-check --candidate examples/promotion-candidate.json --json
-cmsk run --job examples/maintainer-job.json --json
-cmsk handoff --report examples/sample-run-report.json --out reports/handoff.md
+iosk validate --manifest examples/pr-review-manifest.json --json
+iosk gate --manifest examples/pr-review-manifest.json --json
+iosk pr-review --manifest examples/pr-review-manifest.json --out reports/pr-review.md
+iosk promotion-check --candidate examples/promotion-candidate.json --json
+iosk run --job examples/maintainer-job.json --json
+iosk handoff --report examples/sample-run-report.json --out reports/handoff.md
 ```
+
+The `iosk` command is the preferred CLI name. The older `msk` and `cmsk`
+commands remain available during the v0.1.x release line for compatibility with
+early examples and adapters.
 
 You can also run the module directly:
 
 ```bash
-python -m codex_maintainer_safety_kit validate --manifest examples/pr-review-manifest.json
+python -m io_safety_kit validate --manifest examples/pr-review-manifest.json
 ```
 
 ## Fail-Closed Example
@@ -51,7 +71,7 @@ python -m codex_maintainer_safety_kit validate --manifest examples/pr-review-man
 High-risk actions remain blocked even when a fixture claims approval:
 
 ```bash
-cmsk gate --manifest tests/fixtures/blocked_actions/read_secret.json --json
+iosk gate --manifest tests/fixtures/blocked_actions/read_secret.json --json
 ```
 
 ```json
@@ -83,7 +103,7 @@ cmsk gate --manifest tests/fixtures/blocked_actions/read_secret.json --json
 
 ## Example Workflows
 
-- `examples/pr-review-manifest.json`: scope a Codex-assisted PR review.
+- `examples/pr-review-manifest.json`: scope an AI-assisted PR review.
 - `examples/pr-review-report.md`: sample report-only PR review output.
 - `examples/issue-triage-manifest.json`: classify and prioritize issues.
 - `examples/release-checklist-manifest.json`: prepare release notes and checks.
@@ -98,7 +118,7 @@ cmsk gate --manifest tests/fixtures/blocked_actions/read_secret.json --json
 Render a deterministic local Markdown report without posting to GitHub:
 
 ```bash
-cmsk pr-review --manifest examples/pr-review-manifest.json --out reports/pr-review.md --json
+iosk pr-review --manifest examples/pr-review-manifest.json --out reports/pr-review.md --json
 ```
 
 The report summarizes scope, allowed actions, gate status, blockers, warnings,
@@ -106,12 +126,12 @@ and maintainer next steps. It keeps `GitHub mutation performed` set to `False`.
 
 ## Safe Output Promotion
 
-AI-assisted development needs not only safe input, but safe output. CMSK can
-check whether useful private or downstream workflow findings are ready to become
-public OSS artifacts:
+AI-assisted development needs not only safe input, but safe output. I/O Safety
+Kit for OSS can check whether useful private or downstream workflow findings
+are ready to become public OSS artifacts:
 
 ```bash
-cmsk promotion-check --candidate examples/promotion-candidate.json --out reports/promotion.md --json
+iosk promotion-check --candidate examples/promotion-candidate.json --out reports/promotion.md --json
 ```
 
 The check fails closed when secrets, personal data, local paths, private context,
@@ -121,7 +141,7 @@ loop](docs/safe-output-promotion-loop.md).
 ## Project Status
 
 This repository is an early public OSS project for maintainers who want
-auditable Codex-assisted workflows. The current focus is a small v0.1.x release
+auditable AI-assisted workflows. The current focus is a small v0.1.x release
 line with examples, CI, issue templates, blocked-action regression fixtures, and
 maintainer automation recipes.
 
@@ -137,7 +157,6 @@ See:
 - [Maintainer workflows](docs/maintainer-workflows.md)
 - [Downstream dogfooding](docs/downstream-dogfooding.md)
 - [Safe output promotion loop](docs/safe-output-promotion-loop.md)
-- [Codex for OSS application draft](docs/codex_for_oss_application_draft.md)
 
 ## Non-Goals
 

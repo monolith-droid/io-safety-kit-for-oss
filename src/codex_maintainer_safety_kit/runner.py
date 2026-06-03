@@ -58,7 +58,7 @@ def build_run_report(job: dict[str, Any]) -> dict[str, Any]:
     passed = not blockers
     return {
         "generated_at": now_iso(),
-        "mode": "codex_maintainer_safety_kit_report_only_v1",
+        "mode": "io_safety_kit_report_only_v1",
         "job_id": job_id,
         "repository": job.get("repository", ""),
         "status": "job_plan_ready" if passed else "job_plan_blocked",

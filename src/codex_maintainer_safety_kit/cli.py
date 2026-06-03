@@ -103,9 +103,16 @@ def cmd_promotion_check(args: argparse.Namespace) -> int:
     return 0 if result.passed else 2
 
 
+def _program_name() -> str:
+    stem = Path(sys.argv[0]).stem
+    if stem == "__main__":
+        return "python -m io_safety_kit"
+    return stem or "iosk"
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="cmsk",
+        prog=_program_name(),
         description="Fail-closed maintainer workflow checks for AI-assisted OSS work.",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)

@@ -2,10 +2,10 @@
 
 AI-assisted development needs not only safe input, but safe output.
 
-Codex Maintainer Safety Kit treats publication as a maintainer workflow. Useful
-ideas can start in private downstream adapters, local automation, or real
-project operations, but only the generic and privacy-safe part should become
-public OSS.
+I/O Safety Kit for OSS treats publication as a maintainer workflow.
+Useful ideas can start in private downstream adapters, local automation, or
+real project operations, but only the generic and privacy-safe part should
+become public OSS.
 
 ## Loop
 
@@ -27,13 +27,13 @@ to use?", the maintainer also asks "is this safe to publish?"
 Evaluate a promotion candidate:
 
 ```bash
-cmsk promotion-check --candidate examples/promotion-candidate.json --json
+iosk promotion-check --candidate examples/promotion-candidate.json --json
 ```
 
 Render a local Markdown report:
 
 ```bash
-cmsk promotion-check --candidate examples/promotion-candidate.json --out reports/promotion.md
+iosk promotion-check --candidate examples/promotion-candidate.json --out reports/promotion.md
 ```
 
 The command is report-only. It does not create issues, publish releases, push

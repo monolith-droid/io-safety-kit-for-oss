@@ -4,6 +4,10 @@ This project is designed around everyday open source maintainer tasks where an
 AI coding agent can help, but should remain inside a visible authorization
 boundary.
 
+Codex is the first concrete reference workflow for these examples. The core
+pattern is broader: manifest-scoped work, fail-closed gates, report-only output,
+and human maintainer application.
+
 ## Pull Request Review
 
 Use an approval manifest to scope the repository, pull request URL, allowed
@@ -14,7 +18,7 @@ commits, or edit branch protection.
 Render the report locally:
 
 ```bash
-cmsk pr-review --manifest examples/pr-review-manifest.json --out reports/pr-review.md
+iosk pr-review --manifest examples/pr-review-manifest.json --out reports/pr-review.md
 ```
 
 The PR review renderer summarizes scope, allowed actions, blockers, warnings,
@@ -29,9 +33,10 @@ produces a report that a maintainer can apply manually.
 
 ## Release Checklist
 
-Release work can ask Codex to summarize merged PRs, draft release notes, and
-prepare a readiness checklist. Creating a tag, publishing a release, or changing
-package distribution settings should remain a separate explicit approval.
+Release work can ask an AI coding agent to summarize merged PRs, draft release
+notes, and prepare a readiness checklist. Creating a tag, publishing a release,
+or changing package distribution settings should remain a separate explicit
+approval.
 
 ## Security And Dependency Review
 
@@ -40,9 +45,9 @@ authorized to administer. The MVP supports report-only review of dependency
 files and workflow configuration. It does not probe external systems, read
 secrets, or scan repositories outside the manifest.
 
-## Suggested API Credit Use
+## Suggested Agent Workflow Use
 
-If selected for the Codex for OSS program, API credits would be used for:
+Useful report-only AI-assisted workflows include:
 
 - summarizing pull request diffs and review risks,
 - classifying issues and suggesting maintainer follow-up,
@@ -50,6 +55,9 @@ If selected for the Codex for OSS program, API credits would be used for:
 - reviewing CI failures and dependency incidents,
 - creating handoff reports between maintenance sessions,
 - evaluating prompts and manifests against a small regression suite.
+
+When using Codex, these are the reference workflows this project is built to
+exercise first.
 
 ## Downstream Adapters
 

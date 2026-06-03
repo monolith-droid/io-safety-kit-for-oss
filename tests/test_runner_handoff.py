@@ -3,8 +3,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from codex_maintainer_safety_kit.handoff import render_handoff, write_handoff
-from codex_maintainer_safety_kit.runner import build_run_report, load_job, write_report
+from io_safety_kit.handoff import render_handoff, write_handoff
+from io_safety_kit.runner import build_run_report, load_job, write_report
 
 
 ROOT = Path(__file__).resolve().parents[1]

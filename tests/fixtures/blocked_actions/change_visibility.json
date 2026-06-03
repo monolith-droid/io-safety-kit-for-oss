@@ -1,5 +1,5 @@
 {
-  "schema_version": "cmsk.approval.v1",
+  "schema_version": "iosk.approval.v1",
   "operation": "maintainer_handoff",
   "repository": "monolith-droid/codex-maintainer-safety-kit",
   "requested_by": "main-maintainer",

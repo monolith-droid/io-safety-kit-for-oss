@@ -1,6 +1,6 @@
 ---
 name: oss-maintenance
-description: Use this skill to run report-only Codex-assisted OSS maintainer workflows with approval manifests and fail-closed checks.
+description: Use this skill to run report-only AI-assisted OSS maintainer workflows with approval manifests and fail-closed checks.
 ---
 
 # OSS Maintenance Skill
@@ -12,8 +12,8 @@ triage, release preparation, dependency review, or handoff generation.
 
 1. Create or select an approval manifest under `examples/` or a project-local
    maintainer workflow directory.
-2. Run `cmsk validate --manifest <path> --json`.
-3. Run `cmsk gate --manifest <path> --json`.
+2. Run `iosk validate --manifest <path> --json`.
+3. Run `iosk gate --manifest <path> --json`.
 4. If the gate passes, produce only report-only output.
 5. Never execute commands, read secrets, merge pull requests, change repository
    settings, publish releases, or mutate labels unless a separate explicit

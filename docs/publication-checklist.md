@@ -1,23 +1,22 @@
 # Publication Checklist
 
-Use this checklist before making the repository public or submitting the Codex
-for OSS application.
+Use this checklist before public releases or before promoting downstream
+findings into public OSS artifacts.
 
 ## Local Readiness
 
 - Run `python -m unittest discover -s tests`.
 - Run `python -m compileall -q src tests`.
-- Run `cmsk validate --manifest examples/pr-review-manifest.json --json`.
-- Run `cmsk gate --manifest examples/pr-review-manifest.json --json`.
-- Run `cmsk promotion-check --candidate examples/promotion-candidate.json --json`.
-- Run `cmsk run --job examples/maintainer-job.json --json`.
-- Confirm `docs/codex_for_oss_strategy.md` stays local and ignored.
+- Run `iosk validate --manifest examples/pr-review-manifest.json --json`.
+- Run `iosk gate --manifest examples/pr-review-manifest.json --json`.
+- Run `iosk promotion-check --candidate examples/promotion-candidate.json --json`.
+- Run `iosk run --job examples/maintainer-job.json --json`.
+- Confirm local planning notes stay ignored and outside public commits.
 
 ## GitHub Setup
 
-- Create public repository: `monolith-droid/codex-maintainer-safety-kit`.
+- Confirm the public repository URL and CI badge resolve.
 - Push the initial commit.
-- Confirm the CI badge resolves.
 - Create labels: `bug`, `workflow`, `safety`, `good first issue`.
 - Open 3 to 5 public issues for the v0.1.0 roadmap.
 - Close 1 to 2 issues through small PRs before applying, if time allows.
@@ -32,9 +31,10 @@ for OSS application.
 - Add signed approval manifest design notes.
 - Add eval fixtures for blocked action behavior.
 
-## Submission
+## Public Promotion
 
-- Use `docs/codex_for_oss_application_draft.md` for the form copy.
-- Submit only after the repository is public.
-- Select API credits and Codex Security only if the repository is public and
-  authorization/control is clear.
+- Promote only synthetic examples, generic fixtures, and public documentation.
+- Keep private planning notes and local adapter details out of the public
+  repository.
+- Keep report-only defaults unless a separate design issue defines a stronger
+  approval model.

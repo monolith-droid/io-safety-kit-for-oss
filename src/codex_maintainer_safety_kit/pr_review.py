@@ -86,7 +86,7 @@ def render_pr_review(manifest: dict[str, Any]) -> str:
     else:
         lines.extend(
             [
-                "- Resolve blockers before using Codex output for PR review.",
+                "- Resolve blockers before using agent output for PR review.",
                 "- Ask for explicit maintainer approval when approval is missing or expired.",
                 "- Keep the workflow report-only until the gate passes.",
             ]
