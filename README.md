@@ -187,6 +187,7 @@ See:
 - [Maintainer workflows](docs/maintainer-workflows.md)
 - [Downstream dogfooding](docs/downstream-dogfooding.md)
 - [Safe output promotion loop](docs/safe-output-promotion-loop.md)
+- [Signed approval manifests](docs/signed-approval-manifests.md)
 
 ## Non-Goals
 

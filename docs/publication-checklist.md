@@ -30,7 +30,7 @@ findings into public OSS artifacts.
 - Add a GitHub issue triage report renderer.
 - Add a PR review report renderer.
 - Add safe output promotion checks for private-to-public OSS extraction.
-- Add signed approval manifest design notes.
+- Prototype signed approval manifest verification from the design note.
 - Add eval fixtures for blocked action behavior.
 
 ## Public Promotion

@@ -29,6 +29,11 @@ schema checks with `iosk validate --schema`. If the dependency is absent, the
 CLI keeps the standard-library validator working and reports that schema
 validation was skipped.
 
+Signed approval manifests are a future hardening path for binding reviewed
+scope to public signature metadata. The current design keeps signing providers
+optional and keeps private keys out of this project. See
+[Signed approval manifests](signed-approval-manifests.md).
+
 ## Input Boundary
 
 An agent workflow should begin from declared maintainer intent: repository,
@@ -65,7 +70,7 @@ turning those workflows into executable automation.
 ## Roadmap
 
 - Expand JSON Schema coverage as the manifest model grows.
-- Add signed approval manifests.
+- Prototype signed approval manifest verification from the design note.
 - Add GitHub issue and PR comment renderers.
 - Add explicit policy files for organizations and projects.
 - Add evals for prompt regressions and gate behavior.

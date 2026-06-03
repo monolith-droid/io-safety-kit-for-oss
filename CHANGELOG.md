@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add a signed approval manifest design note.
+
 ## v0.1.6
 
 - Add optional JSON Schema validation for approval manifests via
