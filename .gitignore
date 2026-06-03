@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+build/
+dist/
+reports/
+*.log
+.env
+.DS_Store
+
+# Local application planning notes; useful for this workspace, not for the public repo.
+docs/codex_for_oss_strategy.md

@@ -1,0 +1,26 @@
+name: Bug report
+description: Report a validation, gate, or report-only workflow bug.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should have happened?
+    validations:
+      required: true
+  - type: textarea
+    id: safety
+    attributes:
+      label: Safety impact
+      description: Did this affect fail-closed behavior, secrets, command execution, or repository mutation?
+    validations:
+      required: true

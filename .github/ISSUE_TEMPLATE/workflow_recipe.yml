@@ -1,0 +1,26 @@
+name: Workflow recipe
+description: Propose a new maintainer workflow recipe.
+title: "[Workflow]: "
+labels: ["workflow"]
+body:
+  - type: textarea
+    id: task
+    attributes:
+      label: Maintainer task
+      description: What maintainer workflow should this support?
+    validations:
+      required: true
+  - type: textarea
+    id: allowed
+    attributes:
+      label: Allowed actions
+      description: Which read-only or report-only actions should be allowed?
+    validations:
+      required: true
+  - type: textarea
+    id: blocked
+    attributes:
+      label: Blocked actions
+      description: Which side effects must remain blocked?
+    validations:
+      required: true

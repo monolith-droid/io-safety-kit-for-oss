@@ -1,0 +1,22 @@
+{
+  "job_id": "v0.1.0-maintainer-readiness",
+  "repository": "monolith-droid/codex-maintainer-safety-kit",
+  "execute": false,
+  "steps": [
+    {
+      "name": "review bootstrap pull request",
+      "manifest": "examples/pr-review-manifest.json",
+      "notes": "Read-only PR review with local report output."
+    },
+    {
+      "name": "triage open issues",
+      "manifest": "examples/issue-triage-manifest.json",
+      "notes": "Draft labels and priorities without mutating GitHub state."
+    },
+    {
+      "name": "prepare v0.1.0 release checklist",
+      "manifest": "examples/release-checklist-manifest.json",
+      "notes": "Draft release notes and readiness checks only."
+    }
+  ]
+}

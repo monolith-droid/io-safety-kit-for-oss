@@ -1,0 +1,33 @@
+{
+  "schema_version": "cmsk.approval.v1",
+  "operation": "issue_triage",
+  "repository": "monolith-droid/codex-maintainer-safety-kit",
+  "requested_by": "main-maintainer",
+  "reason": "Classify incoming issues and prepare maintainer-readable priority notes.",
+  "risk_level": "low",
+  "allowed_actions": [
+    "read_issue_metadata",
+    "classify_issue_labels",
+    "draft_triage_notes",
+    "write_local_report"
+  ],
+  "targets": [
+    {
+      "type": "issue_query",
+      "url": "https://github.com/monolith-droid/codex-maintainer-safety-kit/issues",
+      "purpose": "triage open issues without mutating labels"
+    }
+  ],
+  "command": {
+    "name": "codex-issue-triage",
+    "preview": "Draft labels and priorities for open issues.",
+    "execute": false
+  },
+  "approval": {
+    "status": "approved",
+    "approval_id": "demo-issue-triage-001",
+    "approved_by": "main-maintainer",
+    "approved_at": "2026-06-04T00:00:00Z",
+    "expires_at": "2099-01-01T00:00:00Z"
+  }
+}

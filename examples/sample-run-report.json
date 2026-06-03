@@ -1,0 +1,25 @@
+{
+  "generated_at": "2026-06-04T00:00:00+00:00",
+  "mode": "codex_maintainer_safety_kit_report_only_v1",
+  "job_id": "sample-maintainer-handoff",
+  "repository": "monolith-droid/codex-maintainer-safety-kit",
+  "status": "job_plan_ready",
+  "passed": true,
+  "dry_run": true,
+  "execution_allowed": false,
+  "command_executed": false,
+  "blockers": [],
+  "warnings": [],
+  "step_count": 1,
+  "steps": [
+    {
+      "index": 0,
+      "name": "review bootstrap pull request",
+      "manifest": "examples/pr-review-manifest.json",
+      "mode": "report_only",
+      "would_execute": false,
+      "command_executed": false,
+      "notes": "Read-only PR review with local report output."
+    }
+  ]
+}
