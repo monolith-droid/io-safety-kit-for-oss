@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.1.5
+
 - Add a report-only issue triage Markdown renderer and CLI command.
 
 ## v0.1.4
