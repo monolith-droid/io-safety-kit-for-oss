@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Document downstream dogfooding as the project loop for turning private
+  maintainer workflows into generic, privacy-safe public improvements.
+
 ## v0.1.1
 
 - Add blocked-action regression fixtures for secret reads, force pushes,

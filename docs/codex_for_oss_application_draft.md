@@ -15,11 +15,14 @@ release preparation, and security checks safely. It defines approval manifests,
 fail-closed gates, CI checks, and auditable reports so agent-assisted maintainer
 work stays scoped to authorized repositories. It is newly public, but it turns a
 real maintainer automation workflow into reusable OSS infrastructure for small
-projects that need safe Codex operations.
+projects that need safe Codex operations. It is also designed for downstream
+dogfooding: private adapters can exercise the public core, while only generic
+and privacy-safe improvements are promoted back as public issues, tests,
+documentation, and releases.
 
 Japanese form copy:
 
-このリポジトリは、OSSメンテナーがCodexをPRレビュー、Issueトリアージ、リリース準備、セキュリティ確認に安全に使うための運用ツールキットです。agentの副作用をapproval manifest、fail-closed gate、CI検証、監査ログで管理し、認可済みリポジトリ内の保守作業だけに限定します。新規公開ですが、実運用から得た安全なメンテナー自動化を再利用可能なOSSにします。
+このリポジトリは、OSSメンテナーがCodexをPRレビュー、Issueトリアージ、リリース準備、セキュリティ確認に安全に使うための運用ツールキットです。agentの副作用をapproval manifest、fail-closed gate、CI検証、監査ログで管理し、認可済みリポジトリ内の保守作業だけに限定します。新規公開ですが、実運用から得た安全なメンテナー自動化を再利用可能なOSSにします。private downstream adapterでpublic coreをdogfoodingし、一般化できる改善だけをpublic issue、test、documentation、releaseとして戻す設計です。
 
 ## API Credit Plan
 

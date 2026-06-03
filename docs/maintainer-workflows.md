@@ -40,3 +40,15 @@ If selected for the Codex for OSS program, API credits would be used for:
 - reviewing CI failures and dependency incidents,
 - creating handoff reports between maintenance sessions,
 - evaluating prompts and manifests against a small regression suite.
+
+## Downstream Adapters
+
+Maintainers can use this project from private downstream adapters without
+publishing the adapter itself. The public core should remain generic: validate
+the manifest, fail closed on risky actions, and produce reports. Local adapters
+can add project-specific paths, storage, or review rituals, but those details
+should stay outside this repository unless they can be safely generalized.
+
+See [Downstream dogfooding](downstream-dogfooding.md) for the promotion
+checklist used to decide which private findings should become public issues,
+fixtures, docs, or PRs.
