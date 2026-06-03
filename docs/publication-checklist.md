@@ -8,6 +8,8 @@ findings into public OSS artifacts.
 - Run `python -m unittest discover -s tests`.
 - Run `python -m compileall -q src tests`.
 - Run `iosk validate --manifest examples/pr-review-manifest.json --json`.
+- Optionally run `python -m pip install -e ".[schema]"`, then
+  `iosk validate --manifest examples/pr-review-manifest.json --schema --json`.
 - Run `iosk gate --manifest examples/pr-review-manifest.json --json`.
 - Run `iosk issue-triage --manifest examples/issue-triage-manifest.json --out reports/issue-triage.md --json`.
 - Run `iosk promotion-check --candidate examples/promotion-candidate.json --json`.
@@ -25,7 +27,6 @@ findings into public OSS artifacts.
 
 ## Suggested First Issues
 
-- Add JSON Schema validation as an optional dependency.
 - Add a GitHub issue triage report renderer.
 - Add a PR review report renderer.
 - Add safe output promotion checks for private-to-public OSS extraction.

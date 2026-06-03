@@ -36,7 +36,7 @@ def emit(data: dict[str, Any], as_json: bool) -> None:
 
 def cmd_validate(args: argparse.Namespace) -> int:
     manifest = load_json(args.manifest)
-    result = validate_manifest(manifest).to_dict()
+    result = validate_manifest(manifest, use_schema=args.schema).to_dict()
     emit(result, args.json)
     return 0 if result["passed"] else 1
 
@@ -140,6 +140,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     validate = subparsers.add_parser("validate", help="Validate an approval manifest.")
     validate.add_argument("--manifest", required=True, help="Path to approval manifest JSON.")
+    validate.add_argument(
+        "--schema",
+        action="store_true",
+        help="Also run optional JSON Schema validation when jsonschema is installed.",
+    )
     validate.add_argument("--json", action="store_true", help="Emit JSON output.")
     validate.set_defaults(func=cmd_validate)
 

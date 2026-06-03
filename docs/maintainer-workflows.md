@@ -8,6 +8,15 @@ Codex is the first concrete reference workflow for these examples. The core
 pattern is broader: manifest-scoped work, fail-closed gates, report-only output,
 and human maintainer application.
 
+For stricter manifest checks, install the optional `schema` extra and run:
+
+```bash
+iosk validate --manifest examples/pr-review-manifest.json --schema --json
+```
+
+If `jsonschema` is not installed, the CLI keeps the standard validator working
+and reports that schema validation was skipped.
+
 ## Pull Request Review
 
 Use an approval manifest to scope the repository, pull request URL, allowed

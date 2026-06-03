@@ -67,6 +67,21 @@ You can also run the module directly:
 python -m io_safety_kit validate --manifest examples/pr-review-manifest.json
 ```
 
+## Optional JSON Schema Validation
+
+The default validator uses only the Python standard library. For stricter
+manifest shape checks, install the optional schema extra and pass `--schema`:
+
+```bash
+python -m pip install -e ".[schema]"
+iosk validate --manifest examples/pr-review-manifest.json --schema --json
+```
+
+When `jsonschema` is installed, schema errors are reported as fail-closed
+`schema_error:*` blockers. When it is not installed, `--schema` falls back to
+the standard validator and emits the warning
+`jsonschema_not_installed_schema_validation_skipped`.
+
 ## Fail-Closed Example
 
 High-risk actions remain blocked even when a fixture claims approval:

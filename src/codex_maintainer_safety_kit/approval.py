@@ -3,9 +3,12 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from importlib import resources
 from pathlib import Path
 from typing import Any
 
+
+SCHEMA_RESOURCE = "schemas/approval-manifest.schema.json"
 
 SUPPORTED_OPERATIONS = {
     "pr_review",
@@ -52,9 +55,10 @@ class CheckResult:
     blockers: list[str]
     warnings: list[str]
     manifest: dict[str, Any]
+    schema_validation: dict[str, Any] | None = None
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        data = {
             "passed": self.passed,
             "status": self.status,
             "blockers": self.blockers,
@@ -64,6 +68,9 @@ class CheckResult:
             "risk_level": self.manifest.get("risk_level"),
             "approval_status": self.manifest.get("approval", {}).get("status"),
         }
+        if self.schema_validation is not None:
+            data["schema_validation"] = self.schema_validation
+        return data
 
 
 def load_json(path: str | Path) -> dict[str, Any]:
@@ -72,6 +79,27 @@ def load_json(path: str | Path) -> dict[str, Any]:
     if not isinstance(data, dict):
         raise ValueError(f"Expected JSON object in {path}")
     return data
+
+
+def load_approval_manifest_schema() -> dict[str, Any]:
+    schema_path = resources.files(__package__).joinpath(SCHEMA_RESOURCE)
+    data = json.loads(schema_path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError(f"Expected JSON object in packaged schema {SCHEMA_RESOURCE}")
+    return data
+
+
+def _load_jsonschema_validator() -> Any | None:
+    try:
+        from jsonschema import Draft202012Validator
+    except ImportError:
+        return None
+    return Draft202012Validator
+
+
+def _schema_path(parts: Any) -> str:
+    path = ".".join(str(part) for part in parts)
+    return path or "<root>"
 
 
 def _parse_datetime(value: str) -> datetime | None:
@@ -87,9 +115,12 @@ def _parse_datetime(value: str) -> datetime | None:
     return parsed
 
 
-def validate_manifest(manifest: dict[str, Any]) -> CheckResult:
+def validate_manifest(
+    manifest: dict[str, Any], *, use_schema: bool = False
+) -> CheckResult:
     blockers: list[str] = []
     warnings: list[str] = []
+    schema_validation: dict[str, Any] | None = None
 
     missing = sorted(REQUIRED_FIELDS - set(manifest))
     blockers.extend(f"missing_field:{field}" for field in missing)
@@ -159,9 +190,53 @@ def validate_manifest(manifest: dict[str, Any]) -> CheckResult:
         elif command.get("execute") is True:
             blockers.append("command_execution_not_supported_in_mvp")
 
+    if use_schema:
+        schema_validation = {
+            "requested": True,
+            "available": False,
+            "schema": SCHEMA_RESOURCE,
+            "status": "schema_validation_skipped",
+            "errors": [],
+        }
+        validator_class = _load_jsonschema_validator()
+        if validator_class is None:
+            warnings.append("jsonschema_not_installed_schema_validation_skipped")
+        else:
+            try:
+                schema = load_approval_manifest_schema()
+                validator_class.check_schema(schema)
+                validator = validator_class(schema)
+                errors = sorted(
+                    validator.iter_errors(manifest),
+                    key=lambda error: (
+                        [str(part) for part in error.absolute_path],
+                        error.message,
+                    ),
+                )
+            except Exception as exc:
+                blockers.append(
+                    f"schema_validation_unavailable:{type(exc).__name__}:{exc}"
+                )
+            else:
+                schema_validation["available"] = True
+                schema_validation["status"] = (
+                    "schema_valid" if not errors else "schema_invalid"
+                )
+                for error in errors:
+                    path = _schema_path(error.absolute_path)
+                    message = str(error.message)
+                    schema_validation["errors"].append(
+                        {
+                            "path": path,
+                            "message": message,
+                            "validator": str(error.validator),
+                        }
+                    )
+                    blockers.append(f"schema_error:{path}:{message}")
+
     passed = not blockers
     status = "manifest_valid" if passed else "manifest_invalid"
-    return CheckResult(passed, status, blockers, warnings, manifest)
+    return CheckResult(passed, status, blockers, warnings, manifest, schema_validation)
 
 
 def evaluate_gate(manifest: dict[str, Any], operation: str | None = None) -> CheckResult:

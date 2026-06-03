@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Add optional JSON Schema validation for approval manifests via
+  `iosk validate --schema`.
+
 ## v0.1.5
 
 - Add a report-only issue triage Markdown renderer and CLI command.

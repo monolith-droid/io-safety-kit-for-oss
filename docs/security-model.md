@@ -24,6 +24,11 @@ The gate checks that the manifest is structurally valid and says approval is
 present. It does not replace GitHub permissions, branch protection, code owner
 review, or human judgment.
 
+When the optional `jsonschema` dependency is installed, maintainers can add
+schema checks with `iosk validate --schema`. If the dependency is absent, the
+CLI keeps the standard-library validator working and reports that schema
+validation was skipped.
+
 ## Input Boundary
 
 An agent workflow should begin from declared maintainer intent: repository,
@@ -59,7 +64,7 @@ turning those workflows into executable automation.
 
 ## Roadmap
 
-- Add JSON Schema validation as an optional dependency.
+- Expand JSON Schema coverage as the manifest model grows.
 - Add signed approval manifests.
 - Add GitHub issue and PR comment renderers.
 - Add explicit policy files for organizations and projects.
