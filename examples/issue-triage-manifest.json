@@ -1,7 +1,7 @@
 {
   "schema_version": "iosk.approval.v1",
   "operation": "issue_triage",
-  "repository": "monolith-droid/codex-maintainer-safety-kit",
+  "repository": "monolith-droid/io-safety-kit-for-oss",
   "requested_by": "main-maintainer",
   "reason": "Classify incoming issues and prepare maintainer-readable priority notes.",
   "risk_level": "low",
@@ -14,7 +14,7 @@
   "targets": [
     {
       "type": "issue_query",
-      "url": "https://github.com/monolith-droid/codex-maintainer-safety-kit/issues",
+      "url": "https://github.com/monolith-droid/io-safety-kit-for-oss/issues",
       "purpose": "triage open issues without mutating labels"
     }
   ],

@@ -1,7 +1,7 @@
 {
   "schema_version": "iosk.approval.v1",
   "operation": "ci_failure_analysis",
-  "repository": "monolith-droid/codex-maintainer-safety-kit",
+  "repository": "monolith-droid/io-safety-kit-for-oss",
   "requested_by": "main-maintainer",
   "reason": "Regression fixture proving branch protection changes fail closed.",
   "risk_level": "high",

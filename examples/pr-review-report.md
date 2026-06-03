@@ -1,6 +1,6 @@
 # PR Review Report
 
-- Repository: `monolith-droid/codex-maintainer-safety-kit`
+- Repository: `monolith-droid/io-safety-kit-for-oss`
 - Operation: `pr_review`
 - Gate status: `gate_allowed_report_only`
 - Approval status: `approved`
@@ -18,7 +18,7 @@
 
 ## Targets
 
-- 1. `pull_request`: https://github.com/monolith-droid/codex-maintainer-safety-kit/pull/1 (review candidate changes only)
+- 1. `pull_request`: https://github.com/monolith-droid/io-safety-kit-for-oss/pull/1 (review candidate changes only)
 
 ## Allowed Actions
 

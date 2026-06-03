@@ -1,6 +1,6 @@
 {
   "job_id": "v0.1.0-maintainer-readiness",
-  "repository": "monolith-droid/codex-maintainer-safety-kit",
+  "repository": "monolith-droid/io-safety-kit-for-oss",
   "execute": false,
   "steps": [
     {

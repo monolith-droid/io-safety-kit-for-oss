@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/monolith-droid/codex-maintainer-safety-kit/schemas/approval-manifest.schema.json",
+  "$id": "https://github.com/monolith-droid/io-safety-kit-for-oss/schemas/approval-manifest.schema.json",
   "title": "I/O Safety Kit for OSS Approval Manifest",
   "type": "object",
   "additionalProperties": true,

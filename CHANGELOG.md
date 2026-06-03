@@ -8,6 +8,8 @@
 - Add `iosk` as the preferred console command while retaining `msk` and `cmsk`
   for v0.1.x compatibility.
 - Update public example schema versions to the `iosk.*` namespace.
+- Rename the public repository slug to `io-safety-kit-for-oss` and update
+  repository URLs in docs, examples, and schemas.
 - Remove the application-form draft from the public documentation set.
 
 ## v0.1.3
