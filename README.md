@@ -1,6 +1,6 @@
 # I/O Safety Kit for OSS
 
-[![CI](https://github.com/monolith-droid/codex-maintainer-safety-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/monolith-droid/codex-maintainer-safety-kit/actions/workflows/ci.yml)
+[![CI](https://github.com/monolith-droid/io-safety-kit-for-oss/actions/workflows/ci.yml/badge.svg)](https://github.com/monolith-droid/io-safety-kit-for-oss/actions/workflows/ci.yml)
 
 I/O Safety Kit for OSS is a small, fail-closed operations layer for open source
 maintainers who want to control both sides of AI-assisted maintenance: what
@@ -82,7 +82,7 @@ iosk gate --manifest tests/fixtures/blocked_actions/read_secret.json --json
   ],
   "operation": "security_audit",
   "passed": false,
-  "repository": "monolith-droid/codex-maintainer-safety-kit",
+  "repository": "monolith-droid/io-safety-kit-for-oss",
   "risk_level": "high",
   "status": "gate_blocked_fail_closed",
   "warnings": [

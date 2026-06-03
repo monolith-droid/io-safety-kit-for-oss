@@ -1,7 +1,7 @@
 {
   "schema_version": "iosk.approval.v1",
   "operation": "release_checklist",
-  "repository": "monolith-droid/codex-maintainer-safety-kit",
+  "repository": "monolith-droid/io-safety-kit-for-oss",
   "requested_by": "main-maintainer",
   "reason": "Prepare release notes and a release readiness checklist for v0.1.0.",
   "risk_level": "medium",

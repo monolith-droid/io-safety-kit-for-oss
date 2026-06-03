@@ -1,7 +1,7 @@
 {
   "schema_version": "iosk.approval.v1",
   "operation": "maintainer_handoff",
-  "repository": "monolith-droid/codex-maintainer-safety-kit",
+  "repository": "monolith-droid/io-safety-kit-for-oss",
   "requested_by": "main-maintainer",
   "reason": "Regression fixture proving repository visibility changes fail closed.",
   "risk_level": "high",
@@ -13,7 +13,7 @@
   "targets": [
     {
       "type": "repository",
-      "url": "https://github.com/monolith-droid/codex-maintainer-safety-kit",
+      "url": "https://github.com/monolith-droid/io-safety-kit-for-oss",
       "purpose": "blocked action regression fixture"
     }
   ],

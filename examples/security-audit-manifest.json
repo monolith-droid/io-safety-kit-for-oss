@@ -1,7 +1,7 @@
 {
   "schema_version": "iosk.approval.v1",
   "operation": "security_audit",
-  "repository": "monolith-droid/codex-maintainer-safety-kit",
+  "repository": "monolith-droid/io-safety-kit-for-oss",
   "requested_by": "main-maintainer",
   "reason": "Review dependency and workflow security posture without scanning unauthorized systems.",
   "risk_level": "high",
@@ -14,7 +14,7 @@
   "targets": [
     {
       "type": "repository",
-      "url": "https://github.com/monolith-droid/codex-maintainer-safety-kit",
+      "url": "https://github.com/monolith-droid/io-safety-kit-for-oss",
       "purpose": "authorized repository security review"
     }
   ],

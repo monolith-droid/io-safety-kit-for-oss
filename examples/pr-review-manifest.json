@@ -1,7 +1,7 @@
 {
   "schema_version": "iosk.approval.v1",
   "operation": "pr_review",
-  "repository": "monolith-droid/codex-maintainer-safety-kit",
+  "repository": "monolith-droid/io-safety-kit-for-oss",
   "requested_by": "main-maintainer",
   "reason": "Review a pull request for regressions, missing tests, and maintainer follow-up items.",
   "risk_level": "low",
@@ -14,7 +14,7 @@
   "targets": [
     {
       "type": "pull_request",
-      "url": "https://github.com/monolith-droid/codex-maintainer-safety-kit/pull/1",
+      "url": "https://github.com/monolith-droid/io-safety-kit-for-oss/pull/1",
       "purpose": "review candidate changes only"
     }
   ],
