@@ -84,6 +84,10 @@ Verification starts as a separate report-only command:
 
 ```bash
 iosk signature-check --manifest examples/signed-pr-review-manifest.json --json
+iosk trust-policy-check \
+  --manifest examples/signed-pr-review-manifest.json \
+  --policy examples/trust-policy.json \
+  --json
 ```
 
 The current command verifies the provider-neutral portion of the design:
@@ -91,7 +95,10 @@ canonical payload generation, SHA-256 payload digest comparison, required public
 signature metadata, and existing manifest validation. It does not verify a
 cryptographic provider signature yet, and reports that explicitly.
 
-A future provider-backed implementation can extend this sequence:
+The trust policy command checks the next provider-neutral layer: whether the
+public signature identity and key reference are trusted for the repository,
+operation, and risk level. A future provider-backed implementation can extend
+this sequence:
 
 1. Load and validate the approval manifest.
 2. Canonicalize the signed subset of manifest fields.
@@ -119,6 +126,10 @@ A future policy file might define:
 - maximum approval lifetime,
 - required number of signatures for high-risk operations,
 - whether unsigned manifests are allowed for low-risk report-only workflows.
+
+The current public fixture lives in `examples/trust-policy.json` and uses only
+synthetic identity metadata. It does not contain private keys, tokens,
+certificates, signing service URLs, or organization-specific policy.
 
 ## Fail-Closed Rules
 
@@ -154,6 +165,18 @@ The digest covers the approved manifest fields and intentionally excludes the
 `allowed_actions`, or `approval` changes after approval, `iosk signature-check`
 fails closed with `signature_payload_digest_mismatch`.
 
+`examples/trust-policy.json` demonstrates the first policy layer. It permits the
+synthetic `maintainer@example.invalid` identity and
+`synthetic-public-fixture-key` key reference to approve selected low- or
+medium-risk maintainer operations for this repository. `iosk trust-policy-check`
+fails closed when:
+
+- the manifest digest check fails,
+- the repository does not match the policy,
+- the signature identity or key id is not trusted,
+- the operation is outside `allowed_operations`,
+- the manifest risk level exceeds `max_risk_level`.
+
 ## Non-Goals
 
 - This design does not choose a signing provider.
@@ -164,8 +187,8 @@ fails closed with `signature_payload_digest_mismatch`.
 
 ## Open Questions
 
-- Should provider-backed signature verification live in `signature-check`, an
-  option on `iosk gate`, or both?
+- Should provider-backed signature verification live in `signature-check`,
+  `trust-policy-check`, an option on `iosk gate`, or a combination of them?
 - Should high-risk operations require multiple trusted signatures?
-- How should project policy be represented without making simple local use too
+- How much richer can project policy become without making simple local use too
   heavy?

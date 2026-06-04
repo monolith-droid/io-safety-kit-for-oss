@@ -21,10 +21,15 @@ For signed manifest digest metadata, run:
 
 ```bash
 iosk signature-check --manifest examples/signed-pr-review-manifest.json --json
+iosk trust-policy-check \
+  --manifest examples/signed-pr-review-manifest.json \
+  --policy examples/trust-policy.json \
+  --json
 ```
 
 This checks the canonical manifest payload digest without introducing private
-keys or provider-specific signing services.
+keys or provider-specific signing services, then checks synthetic public trust
+policy metadata for repository, identity, key, operation, and risk scope.
 
 ## Pull Request Review
 
