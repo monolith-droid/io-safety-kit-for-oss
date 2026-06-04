@@ -47,6 +47,33 @@ def _dict_value(value: Any) -> dict[str, Any]:
 
 
 @dataclass
+class ReviewEvidenceSummary:
+    status: str
+    reviewed_by_role: str | None
+    check_count: int
+    passed_check_count: int
+    check_ids: list[str]
+    failed_check_ids: list[str]
+    missing_evidence_check_ids: list[str]
+    missing_id_check_indices: list[int]
+    malformed_check_count: int
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "status": self.status,
+            "ready_for_public_review": self.status == "review_evidence_ready",
+            "reviewed_by_role": self.reviewed_by_role,
+            "check_count": self.check_count,
+            "passed_check_count": self.passed_check_count,
+            "check_ids": self.check_ids,
+            "failed_check_ids": self.failed_check_ids,
+            "missing_evidence_check_ids": self.missing_evidence_check_ids,
+            "missing_id_check_indices": self.missing_id_check_indices,
+            "malformed_check_count": self.malformed_check_count,
+        }
+
+
+@dataclass
 class PromotionResult:
     passed: bool
     status: str
@@ -67,6 +94,7 @@ class PromotionResult:
             "promotion_target": plan.get("target"),
             "public_issue_required": True,
             "external_publish_performed": False,
+            "review_evidence": summarize_review_evidence(self.candidate).to_dict(),
         }
 
 
@@ -84,6 +112,63 @@ def _truthy(value: Any) -> bool:
 
 def _list_values(value: Any) -> list[Any]:
     return value if isinstance(value, list) else []
+
+
+def summarize_review_evidence(candidate: dict[str, Any]) -> ReviewEvidenceSummary:
+    evidence = _dict_value(candidate.get("review_evidence"))
+    reviewed_by_role = evidence.get("reviewed_by_role")
+    reviewed_by_role_text = str(reviewed_by_role) if reviewed_by_role else None
+    checks = _list_values(evidence.get("checks"))
+
+    check_ids: list[str] = []
+    failed_check_ids: list[str] = []
+    missing_evidence_check_ids: list[str] = []
+    missing_id_check_indices: list[int] = []
+    passed_check_count = 0
+    malformed_check_count = 0
+
+    for index, check in enumerate(checks):
+        if not isinstance(check, dict):
+            malformed_check_count += 1
+            continue
+
+        check_id_value = check.get("id")
+        check_id = str(check_id_value) if check_id_value else ""
+        if check_id:
+            check_ids.append(check_id)
+        else:
+            missing_id_check_indices.append(index)
+            check_id = f"missing:{index}"
+
+        if check.get("status") == "passed":
+            passed_check_count += 1
+        else:
+            failed_check_ids.append(check_id)
+
+        if not check.get("evidence"):
+            missing_evidence_check_ids.append(check_id)
+
+    ready = (
+        bool(evidence)
+        and bool(reviewed_by_role_text)
+        and bool(checks)
+        and malformed_check_count == 0
+        and not failed_check_ids
+        and not missing_evidence_check_ids
+        and not missing_id_check_indices
+    )
+
+    return ReviewEvidenceSummary(
+        status="review_evidence_ready" if ready else "review_evidence_blocked",
+        reviewed_by_role=reviewed_by_role_text,
+        check_count=len(checks),
+        passed_check_count=passed_check_count,
+        check_ids=check_ids,
+        failed_check_ids=failed_check_ids,
+        missing_evidence_check_ids=missing_evidence_check_ids,
+        missing_id_check_indices=missing_id_check_indices,
+        malformed_check_count=malformed_check_count,
+    )
 
 
 def evaluate_promotion_candidate(candidate: dict[str, Any]) -> PromotionResult:
@@ -185,6 +270,7 @@ def render_promotion_report(candidate: dict[str, Any]) -> str:
     source = _dict_value(candidate.get("source"))
     plan = _dict_value(candidate.get("promotion_plan"))
     evidence = _dict_value(candidate.get("review_evidence"))
+    evidence_summary = summarize_review_evidence(candidate)
     evidence_checks = _list_values(evidence.get("checks"))
 
     lines = [
@@ -219,7 +305,24 @@ def render_promotion_report(candidate: dict[str, Any]) -> str:
         lines.append("- None")
 
     lines.extend(["", "## Review Evidence", ""])
+    lines.append(f"- Evidence status: `{evidence_summary.status}`")
+    lines.append(
+        "- Evidence checks passed: "
+        f"`{evidence_summary.passed_check_count}/{evidence_summary.check_count}`"
+    )
     lines.append(f"- Reviewed by role: `{evidence.get('reviewed_by_role', '')}`")
+    if evidence_summary.failed_check_ids:
+        failed = ", ".join(f"`{check_id}`" for check_id in evidence_summary.failed_check_ids)
+        lines.append(f"- Failed checks: {failed}")
+    if evidence_summary.missing_evidence_check_ids:
+        missing = ", ".join(
+            f"`{check_id}`" for check_id in evidence_summary.missing_evidence_check_ids
+        )
+        lines.append(f"- Missing evidence notes: {missing}")
+    if evidence_summary.malformed_check_count:
+        lines.append(
+            f"- Malformed evidence checks: `{evidence_summary.malformed_check_count}`"
+        )
     if evidence_checks:
         for check in evidence_checks:
             if isinstance(check, dict):

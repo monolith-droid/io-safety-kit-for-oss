@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add machine-readable review evidence summaries to promotion check output.
+
 ## v0.2.5
 
 - Add public-safe review evidence checks for safe output promotion candidates.

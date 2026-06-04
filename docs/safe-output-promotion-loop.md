@@ -73,6 +73,12 @@ Each evidence check should have:
 `promotion-check` fails closed when review evidence is missing, malformed,
 empty, or marked as failed.
 
+JSON output includes a `review_evidence` summary so maintainers and CI can see
+the public-safe evidence record without parsing Markdown or exposing private
+logs. The summary reports the evidence status, reviewed role, check count,
+passed count, check ids, failed ids, missing evidence notes, missing id
+positions, and malformed check count.
+
 ## Blockers
 
 The promotion check fails closed when a candidate still contains or depends on:
