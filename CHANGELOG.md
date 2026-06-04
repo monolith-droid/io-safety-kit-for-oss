@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.2.5
+
 - Add public-safe review evidence checks for safe output promotion candidates.
 
 ## v0.2.4
