@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-2025]
+        os: [ubuntu-latest, windows-2025-vs2026]
         python-version: ["3.9", "3.12"]
 
     steps:
@@ -45,9 +45,12 @@ jobs:
           iosk gate --manifest examples/pr-review-manifest.json --json
           iosk issue-triage --manifest examples/issue-triage-manifest.json --out reports/issue-triage.md --json
           iosk promotion-check --candidate examples/promotion-candidate.json --json
+          iosk signature-check --manifest examples/signed-pr-review-manifest.json --json
+          iosk trust-policy-check --manifest examples/signed-pr-review-manifest.json --policy examples/trust-policy.json --json
           iosk run --job examples/maintainer-job.json --json
 
       - name: Optional schema validation
         run: |
           python -m pip install -e ".[schema]"
           iosk validate --manifest examples/pr-review-manifest.json --schema --json
+          iosk validate --manifest examples/signed-pr-review-manifest.json --schema --json

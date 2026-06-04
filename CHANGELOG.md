@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Refresh CI for the Windows 2025 VS 2026 runner label and signed-policy smoke
+  checks.
+
 ## v0.2.3
 
 - Add provider-neutral trust policy fixtures and `iosk trust-policy-check`.
