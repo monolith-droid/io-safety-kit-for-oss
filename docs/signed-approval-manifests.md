@@ -80,8 +80,18 @@ single-file approvals, but they must still avoid secrets.
 
 ## Verification Flow
 
-Verification should be a separate report-only command or gate option. A future
-implementation can follow this sequence:
+Verification starts as a separate report-only command:
+
+```bash
+iosk signature-check --manifest examples/signed-pr-review-manifest.json --json
+```
+
+The current command verifies the provider-neutral portion of the design:
+canonical payload generation, SHA-256 payload digest comparison, required public
+signature metadata, and existing manifest validation. It does not verify a
+cryptographic provider signature yet, and reports that explicitly.
+
+A future provider-backed implementation can extend this sequence:
 
 1. Load and validate the approval manifest.
 2. Canonicalize the signed subset of manifest fields.
@@ -127,6 +137,23 @@ The verifier should never read private keys or secrets. It should only consume
 public signatures, public certificates or key references, local policy, and the
 manifest content.
 
+## Current Public Fixture
+
+`examples/signed-pr-review-manifest.json` demonstrates detached signature
+metadata without private key material. The manifest records:
+
+- `type`: `detached`
+- `algorithm`: `sha256-canonical-json-v1`
+- `identity`: a synthetic maintainer identity
+- `key_id`: a synthetic public fixture key
+- `payload_digest`: the canonical approval manifest payload digest
+- `signature_path`: a relative path to a synthetic `.sig` placeholder
+
+The digest covers the approved manifest fields and intentionally excludes the
+`signature` metadata itself. If a signed field such as `reason`, `targets`,
+`allowed_actions`, or `approval` changes after approval, `iosk signature-check`
+fails closed with `signature_payload_digest_mismatch`.
+
 ## Non-Goals
 
 - This design does not choose a signing provider.
@@ -137,8 +164,8 @@ manifest content.
 
 ## Open Questions
 
-- Which canonical JSON format should the project standardize on?
-- Should signature verification be a new command or an option on `iosk gate`?
+- Should provider-backed signature verification live in `signature-check`, an
+  option on `iosk gate`, or both?
 - Should high-risk operations require multiple trusted signatures?
 - How should project policy be represented without making simple local use too
   heavy?

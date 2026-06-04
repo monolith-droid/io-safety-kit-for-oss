@@ -17,6 +17,15 @@ iosk validate --manifest examples/pr-review-manifest.json --schema --json
 If `jsonschema` is not installed, the CLI keeps the standard validator working
 and reports that schema validation was skipped.
 
+For signed manifest digest metadata, run:
+
+```bash
+iosk signature-check --manifest examples/signed-pr-review-manifest.json --json
+```
+
+This checks the canonical manifest payload digest without introducing private
+keys or provider-specific signing services.
+
 ## Pull Request Review
 
 Use an approval manifest to scope the repository, pull request URL, allowed
