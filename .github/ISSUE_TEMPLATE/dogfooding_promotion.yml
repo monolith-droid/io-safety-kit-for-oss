@@ -1,0 +1,72 @@
+name: Dogfooding to public
+description: Convert a downstream dogfooding finding into public OSS work.
+title: "[Dogfooding]: "
+labels: ["workflow", "safety", "v0.2.0"]
+body:
+  - type: textarea
+    id: public-problem
+    attributes:
+      label: Public problem statement
+      description: What can another OSS maintainer understand without private context?
+    validations:
+      required: true
+  - type: textarea
+    id: generalized-finding
+    attributes:
+      label: Generalized finding
+      description: Describe the reusable pattern. Do not include private paths, service names, transcripts, approval IDs, tokens, or organization-only policy.
+    validations:
+      required: true
+  - type: dropdown
+    id: artifact-type
+    attributes:
+      label: Public artifact type
+      description: What should this become first?
+      options:
+        - Documentation
+        - Example manifest
+        - Regression fixture
+        - Schema rule
+        - Report renderer change
+        - CLI behavior
+        - Maintainer workflow recipe
+    validations:
+      required: true
+  - type: textarea
+    id: proposed-work
+    attributes:
+      label: Proposed public work
+      description: What public issue, test, fixture, doc, example, or PR should be created?
+    validations:
+      required: true
+  - type: checkboxes
+    id: extraction-safety
+    attributes:
+      label: Safe extraction checks
+      options:
+        - label: Secrets, tokens, passwords, credentials, and key material are removed.
+          required: true
+        - label: Personal details and private transcripts are removed.
+          required: true
+        - label: Local absolute paths and private approval IDs are removed.
+          required: true
+        - label: Service names and organization-specific policy are generalized or removed.
+          required: true
+        - label: Real data is replaced with synthetic examples or fixtures.
+          required: true
+        - label: The proposed change preserves report-only and fail-closed defaults.
+          required: true
+  - type: textarea
+    id: stays-private
+    attributes:
+      label: What must stay private?
+      description: Name categories only. Do not paste private data.
+    validations:
+      required: true
+  - type: textarea
+    id: public-validation
+    attributes:
+      label: Public validation path
+      description: How can CI, docs, or a maintainer review verify the generalized work?
+    validations:
+      required: true

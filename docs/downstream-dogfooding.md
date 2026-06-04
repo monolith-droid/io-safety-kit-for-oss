@@ -53,6 +53,11 @@ it can be described without private context:
 - Can CI verify the behavior?
 - Does the change preserve report-only and fail-closed defaults?
 
+When the answer is yes, open a public issue with the
+`Dogfooding to public` issue template. The template asks for the public problem,
+the generalized finding, the proposed artifact, safe extraction checks, and the
+categories that must stay private.
+
 Good promotion candidates:
 
 - blocked-action fixtures,
