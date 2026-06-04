@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.2.2
+
 - Add signed approval manifest digest verification fixtures and
   `iosk signature-check`.
 
