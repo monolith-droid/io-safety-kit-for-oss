@@ -52,6 +52,8 @@ it can be described without private context:
   organization names, and service-specific operations?
 - Can CI verify the behavior?
 - Does the change preserve report-only and fail-closed defaults?
+- Does the promotion candidate include public-safe review evidence instead of
+  private records?
 
 When the answer is yes, open a public issue with the
 `Dogfooding to public` issue template. The template asks for the public problem,

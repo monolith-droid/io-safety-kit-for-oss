@@ -37,6 +37,8 @@ body:
           required: true
         - label: Real data is replaced with synthetic examples or fixtures.
           required: true
+        - label: Public-safe review evidence is included, without private records.
+          required: true
         - label: The candidate can be tested or reviewed in public CI/docs.
           required: true
   - type: textarea

@@ -15,6 +15,7 @@ REQUIRED_FIELDS = {
     "output_artifacts",
     "privacy_review",
     "generalization",
+    "review_evidence",
     "promotion_plan",
 }
 
@@ -138,6 +139,28 @@ def evaluate_promotion_candidate(candidate: dict[str, Any]) -> PromotionResult:
         if not artifact.get("path"):
             blockers.append(f"artifact_missing_path:{index}")
 
+    evidence = _dict_value(candidate.get("review_evidence"))
+    if not evidence:
+        blockers.append("review_evidence_required")
+    if not evidence.get("reviewed_by_role"):
+        blockers.append("review_evidence_reviewed_by_role_required")
+
+    evidence_checks = _list_values(evidence.get("checks"))
+    if not evidence_checks:
+        blockers.append("review_evidence_checks_required")
+    for index, check in enumerate(evidence_checks):
+        if not isinstance(check, dict):
+            blockers.append(f"review_evidence_check_not_object:{index}")
+            continue
+        check_id = check.get("id")
+        if not check_id:
+            blockers.append(f"review_evidence_check_missing_id:{index}")
+        status = check.get("status")
+        if status != "passed":
+            blockers.append(f"review_evidence_check_not_passed:{check_id}")
+        if not check.get("evidence"):
+            blockers.append(f"review_evidence_check_missing_evidence:{check_id}")
+
     plan = _dict_value(candidate.get("promotion_plan"))
     if plan.get("target") not in {"issue", "pull_request", "release"}:
         blockers.append(f"unsupported_promotion_target:{plan.get('target')}")
@@ -161,6 +184,8 @@ def render_promotion_report(candidate: dict[str, Any]) -> str:
     artifacts = _list_values(candidate.get("output_artifacts"))
     source = _dict_value(candidate.get("source"))
     plan = _dict_value(candidate.get("promotion_plan"))
+    evidence = _dict_value(candidate.get("review_evidence"))
+    evidence_checks = _list_values(evidence.get("checks"))
 
     lines = [
         "# Safe Output Promotion Report",
@@ -189,6 +214,20 @@ def render_promotion_report(candidate: dict[str, Any]) -> str:
             if isinstance(artifact, dict):
                 lines.append(
                     f"- `{artifact.get('type', '')}`: {artifact.get('path', '')}"
+                )
+    else:
+        lines.append("- None")
+
+    lines.extend(["", "## Review Evidence", ""])
+    lines.append(f"- Reviewed by role: `{evidence.get('reviewed_by_role', '')}`")
+    if evidence_checks:
+        for check in evidence_checks:
+            if isinstance(check, dict):
+                check_id = check.get("id", "")
+                status = check.get("status", "")
+                evidence_note = check.get("evidence", "")
+                lines.append(
+                    f"- `{check_id}`: `{status}` - {evidence_note}"
                 )
     else:
         lines.append("- None")
