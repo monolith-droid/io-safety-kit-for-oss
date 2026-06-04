@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.2.3
+
 - Add provider-neutral trust policy fixtures and `iosk trust-policy-check`.
 
 ## v0.2.2
