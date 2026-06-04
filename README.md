@@ -176,7 +176,9 @@ iosk promotion-check --candidate examples/promotion-candidate.json --out reports
 The check fails closed when secrets, personal data, local paths, private context,
 non-synthetic examples, or missing review evidence remain in the candidate.
 Review evidence must be public-safe and synthetic; it should describe what was
-checked without quoting private records. See
+checked without quoting private records. JSON output includes an evidence
+summary with check counts, check ids, failed ids, and missing evidence notes so
+CI and maintainers can review the record without parsing private logs. See
 [Safe output promotion loop](docs/safe-output-promotion-loop.md).
 
 ## Signed Manifest Digest Check

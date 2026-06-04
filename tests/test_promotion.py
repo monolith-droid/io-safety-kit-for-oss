@@ -7,6 +7,7 @@ from io_safety_kit.promotion import (
     evaluate_promotion_candidate,
     load_candidate,
     render_promotion_report,
+    summarize_review_evidence,
     write_promotion_report,
 )
 
@@ -26,8 +27,25 @@ class PromotionTests(unittest.TestCase):
         self.assertIn("Safe Output Promotion Report", report)
         self.assertIn("External publish performed: `False`", report)
         self.assertIn("Review Evidence", report)
+        self.assertIn("Evidence status: `review_evidence_ready`", report)
+        self.assertIn("Evidence checks passed: `3/3`", report)
         self.assertIn("Reviewed by role: `maintainer`", report)
         self.assertIn("`synthetic-example`: `passed`", report)
+
+        result_data = result.to_dict()
+        self.assertEqual(
+            result_data["review_evidence"]["status"],
+            "review_evidence_ready",
+        )
+        self.assertTrue(
+            result_data["review_evidence"]["ready_for_public_review"]
+        )
+        self.assertEqual(result_data["review_evidence"]["check_count"], 3)
+        self.assertEqual(result_data["review_evidence"]["passed_check_count"], 3)
+        self.assertEqual(
+            result_data["review_evidence"]["check_ids"],
+            ["synthetic-example", "public-artifacts", "side-effects"],
+        )
 
     def test_secret_marker_blocks_candidate(self):
         candidate = load_candidate(ROOT / "examples" / "promotion-candidate.json")
@@ -71,6 +89,40 @@ class PromotionTests(unittest.TestCase):
             "review_evidence_check_not_passed:synthetic-example",
             result.blockers,
         )
+        result_data = result.to_dict()
+        self.assertEqual(
+            result_data["review_evidence"]["status"],
+            "review_evidence_blocked",
+        )
+        self.assertFalse(
+            result_data["review_evidence"]["ready_for_public_review"]
+        )
+        self.assertEqual(
+            result_data["review_evidence"]["failed_check_ids"],
+            ["synthetic-example"],
+        )
+
+    def test_review_evidence_summary_tracks_malformed_checks(self):
+        candidate = load_candidate(ROOT / "examples" / "promotion-candidate.json")
+        candidate["review_evidence"]["checks"] = [
+            {
+                "status": "passed",
+                "evidence": "A check without an id is not reviewable enough.",
+            },
+            "manual note",
+            {
+                "id": "missing-note",
+                "status": "passed",
+            },
+        ]
+
+        summary = summarize_review_evidence(candidate)
+
+        self.assertEqual(summary.status, "review_evidence_blocked")
+        self.assertEqual(summary.check_count, 3)
+        self.assertEqual(summary.malformed_check_count, 1)
+        self.assertEqual(summary.missing_id_check_indices, [0])
+        self.assertEqual(summary.missing_evidence_check_ids, ["missing-note"])
 
     def test_malformed_nested_values_block_without_crashing(self):
         candidate = load_candidate(ROOT / "examples" / "promotion-candidate.json")
