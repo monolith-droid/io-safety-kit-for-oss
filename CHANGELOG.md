@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add a dogfooding-to-public issue template for safe public promotion.
+
 ## v0.1.7
 
 - Add a signed approval manifest design note.

@@ -52,6 +52,11 @@ A candidate should describe:
 The candidate is ready only when private context has been removed and the
 remaining artifact can be reviewed in a public issue or pull request.
 
+For findings that came from downstream dogfooding, use the `Dogfooding to
+public` issue template before opening a PR. The form keeps the public issue
+focused on the generalized maintainer problem and the safety checks that made
+the output publishable.
+
 ## Blockers
 
 The promotion check fails closed when a candidate still contains or depends on:
