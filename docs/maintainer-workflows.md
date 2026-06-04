@@ -78,6 +78,9 @@ Useful report-only AI-assisted workflows include:
 When using Codex, these are the reference workflows this project is built to
 exercise first.
 
+For an end-to-end synthetic example, see
+[Synthetic maintainer workflow case study](synthetic-maintainer-case-study.md).
+
 ## Downstream Adapters
 
 Maintainers can use this project from private downstream adapters without
