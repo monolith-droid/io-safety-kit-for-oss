@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.2.4
+
 - Refresh CI for the Windows 2025 VS 2026 runner label and signed-policy smoke
   checks.
 
