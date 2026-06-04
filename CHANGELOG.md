@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.2.6
+
 - Add machine-readable review evidence summaries to promotion check output.
 
 ## v0.2.5
