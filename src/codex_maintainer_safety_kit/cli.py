@@ -17,6 +17,7 @@ from .promotion import (
     write_promotion_report,
 )
 from .runner import build_run_report, load_job, write_report
+from .signature import check_signature_metadata
 
 
 def emit(data: dict[str, Any], as_json: bool) -> None:
@@ -124,6 +125,13 @@ def cmd_promotion_check(args: argparse.Namespace) -> int:
     return 0 if result.passed else 2
 
 
+def cmd_signature_check(args: argparse.Namespace) -> int:
+    manifest = load_json(args.manifest)
+    result = check_signature_metadata(manifest).to_dict()
+    emit(result, args.json)
+    return 0 if result["passed"] else 2
+
+
 def _program_name() -> str:
     stem = Path(sys.argv[0]).stem
     if stem == "__main__":
@@ -204,6 +212,16 @@ def build_parser() -> argparse.ArgumentParser:
         "--json", action="store_true", help="Emit JSON output instead of Markdown."
     )
     promotion.set_defaults(func=cmd_promotion_check)
+
+    signature = subparsers.add_parser(
+        "signature-check",
+        help="Check signed approval manifest digest metadata.",
+    )
+    signature.add_argument(
+        "--manifest", required=True, help="Path to signed approval manifest JSON."
+    )
+    signature.add_argument("--json", action="store_true", help="Emit JSON output.")
+    signature.set_defaults(func=cmd_signature_check)
 
     return parser
 

@@ -53,6 +53,7 @@ iosk gate --manifest examples/pr-review-manifest.json --json
 iosk pr-review --manifest examples/pr-review-manifest.json --out reports/pr-review.md
 iosk issue-triage --manifest examples/issue-triage-manifest.json --out reports/issue-triage.md
 iosk promotion-check --candidate examples/promotion-candidate.json --json
+iosk signature-check --manifest examples/signed-pr-review-manifest.json --json
 iosk run --job examples/maintainer-job.json --json
 iosk handoff --report examples/sample-run-report.json --out reports/handoff.md
 ```
@@ -126,6 +127,8 @@ iosk gate --manifest tests/fixtures/blocked_actions/read_secret.json --json
 - `examples/release-checklist-manifest.json`: prepare release notes and checks.
 - `examples/security-audit-manifest.json`: demonstrate a pending approval that
   must fail closed.
+- `examples/signed-pr-review-manifest.json`: demonstrate provider-neutral
+  signed manifest digest metadata.
 - `examples/maintainer-job.json`: report-only job plan using those manifests.
 - `examples/promotion-candidate.json`: check whether private/downstream output
   is safe to promote publicly.
@@ -168,12 +171,28 @@ The check fails closed when secrets, personal data, local paths, private context
 or non-synthetic examples remain in the candidate. See [Safe output promotion
 loop](docs/safe-output-promotion-loop.md).
 
+## Signed Manifest Digest Check
+
+Signed approval manifest support starts with the provider-neutral part: checking
+that public signature metadata still matches the canonical approval manifest
+payload.
+
+```bash
+iosk signature-check --manifest examples/signed-pr-review-manifest.json --json
+```
+
+The fixture intentionally does not include private keys, signing services, or
+provider-specific credentials. The command verifies the canonical SHA-256 payload
+digest and reports `cryptographic_signature_verified` as `False` until a future
+provider integration is added. See
+[Signed approval manifests](docs/signed-approval-manifests.md).
+
 ## Project Status
 
 This repository is an early public OSS project for maintainers who want
-auditable AI-assisted workflows. The current focus is a small v0.1.x release
-line with examples, CI, issue templates, blocked-action regression fixtures, and
-maintainer automation recipes.
+auditable AI-assisted workflows. The current focus is a small active release
+line with examples, CI, issue templates, blocked-action regression fixtures,
+signed-manifest digest fixtures, and maintainer automation recipes.
 
 The project is developed through a dogfooding loop: private downstream adapters
 can use the public core in report-only mode, then promote only generic,

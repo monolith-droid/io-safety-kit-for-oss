@@ -13,6 +13,7 @@ findings into public OSS artifacts.
 - Run `iosk gate --manifest examples/pr-review-manifest.json --json`.
 - Run `iosk issue-triage --manifest examples/issue-triage-manifest.json --out reports/issue-triage.md --json`.
 - Run `iosk promotion-check --candidate examples/promotion-candidate.json --json`.
+- Run `iosk signature-check --manifest examples/signed-pr-review-manifest.json --json`.
 - Run `iosk run --job examples/maintainer-job.json --json`.
 - Confirm local planning notes stay ignored and outside public commits.
 

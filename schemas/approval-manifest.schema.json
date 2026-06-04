@@ -100,6 +100,41 @@
         "approved_at": { "type": "string", "format": "date-time" },
         "expires_at": { "type": "string", "format": "date-time" }
       }
+    },
+    "signature": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["type", "algorithm", "identity", "key_id", "payload_digest"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["detached", "inline"]
+        },
+        "algorithm": {
+          "type": "string",
+          "enum": ["sha256-canonical-json-v1"]
+        },
+        "identity": {
+          "type": "string",
+          "minLength": 1
+        },
+        "key_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payload_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "signature_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "signature": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
     }
   }
 }

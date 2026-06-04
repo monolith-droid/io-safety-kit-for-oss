@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Add signed approval manifest digest verification fixtures and
+  `iosk signature-check`.
+
 ## v0.2.1
 
 - Add a synthetic maintainer workflow case study.
