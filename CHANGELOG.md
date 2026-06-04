@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.2.1
+
 - Add a synthetic maintainer workflow case study.
 
 ## v0.2.0
