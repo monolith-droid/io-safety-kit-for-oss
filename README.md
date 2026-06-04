@@ -187,6 +187,7 @@ See:
 - [Maintainer workflows](docs/maintainer-workflows.md)
 - [Downstream dogfooding](docs/downstream-dogfooding.md)
 - [Safe output promotion loop](docs/safe-output-promotion-loop.md)
+- [Synthetic maintainer workflow case study](docs/synthetic-maintainer-case-study.md)
 - [Signed approval manifests](docs/signed-approval-manifests.md)
 
 ## Non-Goals

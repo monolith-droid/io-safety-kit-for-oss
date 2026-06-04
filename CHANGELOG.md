@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add a synthetic maintainer workflow case study.
+
 ## v0.2.0
 
 - Add a dogfooding-to-public issue template for safe public promotion.
