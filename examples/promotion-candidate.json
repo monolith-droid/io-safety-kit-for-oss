@@ -35,6 +35,26 @@
     "can_be_tested_in_ci": true,
     "public_problem_statement": "AI-assisted development needs a safe output process for promoting private workflow findings into public OSS."
   },
+  "review_evidence": {
+    "reviewed_by_role": "maintainer",
+    "checks": [
+      {
+        "id": "synthetic-example",
+        "status": "passed",
+        "evidence": "The candidate describes a synthetic workflow pattern and does not quote private records."
+      },
+      {
+        "id": "public-artifacts",
+        "status": "passed",
+        "evidence": "All proposed artifacts are public docs, examples, or tests in this repository."
+      },
+      {
+        "id": "side-effects",
+        "status": "passed",
+        "evidence": "The promotion check is report-only and does not create issues, releases, or external posts."
+      }
+    ]
+  },
   "promotion_plan": {
     "target": "release",
     "maintainer_review": "Open a public issue, implement through PR, run CI, then release in the next tagged version.",

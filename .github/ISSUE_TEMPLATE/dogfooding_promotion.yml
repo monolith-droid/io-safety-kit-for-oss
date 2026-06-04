@@ -54,6 +54,8 @@ body:
           required: true
         - label: Real data is replaced with synthetic examples or fixtures.
           required: true
+        - label: Public-safe review evidence is included, without private records.
+          required: true
         - label: The proposed change preserves report-only and fail-closed defaults.
           required: true
   - type: textarea

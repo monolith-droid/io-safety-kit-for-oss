@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add public-safe review evidence checks for safe output promotion candidates.
+
 ## v0.2.4
 
 - Refresh CI for the Windows 2025 VS 2026 runner label and signed-policy smoke

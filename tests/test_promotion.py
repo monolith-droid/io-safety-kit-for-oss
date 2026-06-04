@@ -25,6 +25,9 @@ class PromotionTests(unittest.TestCase):
         self.assertEqual(result.status, "promotion_candidate_ready")
         self.assertIn("Safe Output Promotion Report", report)
         self.assertIn("External publish performed: `False`", report)
+        self.assertIn("Review Evidence", report)
+        self.assertIn("Reviewed by role: `maintainer`", report)
+        self.assertIn("`synthetic-example`: `passed`", report)
 
     def test_secret_marker_blocks_candidate(self):
         candidate = load_candidate(ROOT / "examples" / "promotion-candidate.json")
@@ -47,10 +50,33 @@ class PromotionTests(unittest.TestCase):
             result.blockers,
         )
 
+    def test_missing_review_evidence_blocks_candidate(self):
+        candidate = load_candidate(ROOT / "examples" / "promotion-candidate.json")
+        candidate.pop("review_evidence")
+
+        result = evaluate_promotion_candidate(candidate)
+
+        self.assertFalse(result.passed)
+        self.assertIn("missing_field:review_evidence", result.blockers)
+        self.assertIn("review_evidence_required", result.blockers)
+
+    def test_failed_review_evidence_blocks_candidate(self):
+        candidate = load_candidate(ROOT / "examples" / "promotion-candidate.json")
+        candidate["review_evidence"]["checks"][0]["status"] = "failed"
+
+        result = evaluate_promotion_candidate(candidate)
+
+        self.assertFalse(result.passed)
+        self.assertIn(
+            "review_evidence_check_not_passed:synthetic-example",
+            result.blockers,
+        )
+
     def test_malformed_nested_values_block_without_crashing(self):
         candidate = load_candidate(ROOT / "examples" / "promotion-candidate.json")
         candidate["source"] = "private"
         candidate["promotion_plan"] = "release"
+        candidate["review_evidence"] = "checked"
 
         result = evaluate_promotion_candidate(candidate)
         report = render_promotion_report(candidate)
@@ -58,6 +84,7 @@ class PromotionTests(unittest.TestCase):
         self.assertFalse(result.passed)
         self.assertIn("unsupported_source_kind:None", result.blockers)
         self.assertIn("unsupported_promotion_target:None", result.blockers)
+        self.assertIn("review_evidence_required", result.blockers)
         self.assertIn("promotion_candidate_blocked", report)
 
     def test_promotion_report_can_be_written(self):

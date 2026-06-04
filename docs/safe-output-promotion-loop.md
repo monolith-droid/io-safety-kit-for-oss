@@ -47,6 +47,7 @@ A candidate should describe:
 - why it is useful to other maintainers,
 - which public artifacts will be created,
 - which privacy checks passed,
+- which public-safe review evidence supports the decision,
 - how it will be promoted through public review.
 
 The candidate is ready only when private context has been removed and the
@@ -56,6 +57,21 @@ For findings that came from downstream dogfooding, use the `Dogfooding to
 public` issue template before opening a PR. The form keeps the public issue
 focused on the generalized maintainer problem and the safety checks that made
 the output publishable.
+
+## Review Evidence
+
+Review evidence is a small public-safe record of what the maintainer checked
+before promotion. It should use roles and synthetic descriptions, not personal
+names, private approval IDs, local paths, transcripts, or raw service records.
+
+Each evidence check should have:
+
+- an `id`,
+- a `status` of `passed`,
+- a short `evidence` note that another maintainer can read in public.
+
+`promotion-check` fails closed when review evidence is missing, malformed,
+empty, or marked as failed.
 
 ## Blockers
 
@@ -69,6 +85,7 @@ The promotion check fails closed when a candidate still contains or depends on:
 - service-specific operations,
 - organization-only policy,
 - real data that should be synthetic,
+- missing or failed public-safe review evidence,
 - external publishing as part of the check itself.
 
 ## Maintainer Rule
