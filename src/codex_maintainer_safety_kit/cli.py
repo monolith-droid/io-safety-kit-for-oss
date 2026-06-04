@@ -18,6 +18,7 @@ from .promotion import (
 )
 from .runner import build_run_report, load_job, write_report
 from .signature import check_signature_metadata
+from .trust_policy import evaluate_trust_policy
 
 
 def emit(data: dict[str, Any], as_json: bool) -> None:
@@ -132,6 +133,14 @@ def cmd_signature_check(args: argparse.Namespace) -> int:
     return 0 if result["passed"] else 2
 
 
+def cmd_trust_policy_check(args: argparse.Namespace) -> int:
+    manifest = load_json(args.manifest)
+    policy = load_json(args.policy)
+    result = evaluate_trust_policy(manifest, policy).to_dict()
+    emit(result, args.json)
+    return 0 if result["passed"] else 2
+
+
 def _program_name() -> str:
     stem = Path(sys.argv[0]).stem
     if stem == "__main__":
@@ -222,6 +231,19 @@ def build_parser() -> argparse.ArgumentParser:
     )
     signature.add_argument("--json", action="store_true", help="Emit JSON output.")
     signature.set_defaults(func=cmd_signature_check)
+
+    trust_policy = subparsers.add_parser(
+        "trust-policy-check",
+        help="Check signed manifest metadata against a trust policy.",
+    )
+    trust_policy.add_argument(
+        "--manifest", required=True, help="Path to signed approval manifest JSON."
+    )
+    trust_policy.add_argument(
+        "--policy", required=True, help="Path to trust policy JSON."
+    )
+    trust_policy.add_argument("--json", action="store_true", help="Emit JSON output.")
+    trust_policy.set_defaults(func=cmd_trust_policy_check)
 
     return parser
 

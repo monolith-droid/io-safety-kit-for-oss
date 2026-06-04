@@ -1,0 +1,22 @@
+{
+  "schema_version": "iosk.trust-policy.v1",
+  "policy_id": "synthetic-maintainer-trust-policy",
+  "repository": "monolith-droid/io-safety-kit-for-oss",
+  "trusted_identities": [
+    {
+      "identity": "maintainer@example.invalid",
+      "key_id": "synthetic-public-fixture-key",
+      "allowed_operations": [
+        "pr_review",
+        "issue_triage",
+        "release_checklist"
+      ],
+      "max_risk_level": "medium",
+      "status": "active"
+    }
+  ],
+  "unsigned_manifest_policy": {
+    "low_risk_report_only": "allow_with_warning",
+    "medium_or_high_risk": "block"
+  }
+}

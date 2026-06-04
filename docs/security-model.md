@@ -29,8 +29,9 @@ schema checks with `iosk validate --schema`. If the dependency is absent, the
 CLI keeps the standard-library validator working and reports that schema
 validation was skipped.
 
-Signed approval manifests are a future hardening path for binding reviewed
-scope to public signature metadata. The current design keeps signing providers
+Signed approval manifest fixtures now bind reviewed scope to public digest
+metadata and synthetic trust policy metadata. The current implementation does
+not verify provider cryptographic signatures. It keeps signing providers
 optional and keeps private keys out of this project. See
 [Signed approval manifests](signed-approval-manifests.md).
 
@@ -70,7 +71,8 @@ turning those workflows into executable automation.
 ## Roadmap
 
 - Expand JSON Schema coverage as the manifest model grows.
-- Prototype signed approval manifest verification from the design note.
+- Add provider-backed signature verification after the public fixture model is
+  stable.
 - Add GitHub issue and PR comment renderers.
-- Add explicit policy files for organizations and projects.
+- Expand explicit policy files for organizations and projects.
 - Add evals for prompt regressions and gate behavior.

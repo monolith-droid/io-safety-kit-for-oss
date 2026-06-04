@@ -54,6 +54,10 @@ iosk pr-review --manifest examples/pr-review-manifest.json --out reports/pr-revi
 iosk issue-triage --manifest examples/issue-triage-manifest.json --out reports/issue-triage.md
 iosk promotion-check --candidate examples/promotion-candidate.json --json
 iosk signature-check --manifest examples/signed-pr-review-manifest.json --json
+iosk trust-policy-check \
+  --manifest examples/signed-pr-review-manifest.json \
+  --policy examples/trust-policy.json \
+  --json
 iosk run --job examples/maintainer-job.json --json
 iosk handoff --report examples/sample-run-report.json --out reports/handoff.md
 ```
@@ -129,6 +133,8 @@ iosk gate --manifest tests/fixtures/blocked_actions/read_secret.json --json
   must fail closed.
 - `examples/signed-pr-review-manifest.json`: demonstrate provider-neutral
   signed manifest digest metadata.
+- `examples/trust-policy.json`: define synthetic trusted signature identities
+  for repository, operation, and risk checks.
 - `examples/maintainer-job.json`: report-only job plan using those manifests.
 - `examples/promotion-candidate.json`: check whether private/downstream output
   is safe to promote publicly.
@@ -187,12 +193,31 @@ digest and reports `cryptographic_signature_verified` as `False` until a future
 provider integration is added. See
 [Signed approval manifests](docs/signed-approval-manifests.md).
 
+## Trust Policy Check
+
+A signed manifest can say who claims to have signed it, but a project policy
+decides whether that identity is trusted for a repository, operation, and risk
+level:
+
+```bash
+iosk trust-policy-check \
+  --manifest examples/signed-pr-review-manifest.json \
+  --policy examples/trust-policy.json \
+  --json
+```
+
+The fixture uses only public, synthetic identity metadata. The check first
+requires the signed manifest digest metadata to pass, then verifies the identity,
+key reference, allowed operations, repository, and maximum risk level. It does
+not read private keys or call signing services.
+
 ## Project Status
 
 This repository is an early public OSS project for maintainers who want
 auditable AI-assisted workflows. The current focus is a small active release
 line with examples, CI, issue templates, blocked-action regression fixtures,
-signed-manifest digest fixtures, and maintainer automation recipes.
+signed-manifest digest and trust-policy fixtures, and maintainer automation
+recipes.
 
 The project is developed through a dogfooding loop: private downstream adapters
 can use the public core in report-only mode, then promote only generic,

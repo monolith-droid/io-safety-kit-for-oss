@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add provider-neutral trust policy fixtures and `iosk trust-policy-check`.
+
 ## v0.2.2
 
 - Add signed approval manifest digest verification fixtures and
