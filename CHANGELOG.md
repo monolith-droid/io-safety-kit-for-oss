@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add downstream adapter guidance for preserving JSON array fields in wrappers.
+
 ## v1.0.0
 
 - Declare the first stable release line for the report-only `iosk` command

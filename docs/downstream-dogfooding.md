@@ -40,6 +40,48 @@ Recommended defaults:
 If a local project needs stronger behavior, add it in the local adapter first,
 then promote only the generic, well-tested part back to this repository.
 
+## Adapter JSON Shape
+
+Downstream adapters often wrap `iosk --json` output in a local report. Preserve
+the public JSON shape when doing that. Fields such as `blockers`, `warnings`,
+`check_ids`, `failed_check_ids`, `invalid_reference_targets`, and
+`missing_reference_item_ids` should remain arrays even when they are empty.
+
+This matters for CI and handoff tooling: an empty array means "checked and no
+items were found"; `null` or an object-like value can make a wrapper report look
+ambiguous.
+
+For Windows PowerShell wrappers, normalize possibly empty values before
+re-serializing:
+
+```powershell
+function New-JsonArray {
+    param([object]$Value)
+
+    if ($null -eq $Value) {
+        return ,([object[]]@())
+    }
+    return ,([object[]]@($Value))
+}
+
+$upstream = iosk gate --manifest examples/pr-review-manifest.json --json |
+    ConvertFrom-Json
+
+$report = [ordered]@{
+    status = $upstream.status
+    passed = [bool]$upstream.passed
+    blockers = New-JsonArray -Value $upstream.blockers
+    warnings = New-JsonArray -Value $upstream.warnings
+    command_executed = $false
+}
+
+$report | ConvertTo-Json -Depth 8
+```
+
+The adapter can add local metadata, but it should not change the meaning of the
+core report fields. Keep local-only paths, approval records, and private policy
+out of any public example derived from the adapter.
+
 ## Promotion Checklist
 
 Before turning a downstream improvement into a public contribution, check that
