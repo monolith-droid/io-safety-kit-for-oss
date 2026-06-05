@@ -63,6 +63,8 @@ Within the v1 line, maintainers should be able to rely on:
 - trust policy checks over public synthetic metadata,
 - run report and handoff rendering,
 - optional JSON Schema validation remaining optional.
+- downstream adapters preserving machine-readable JSON fields such as blockers
+  and warnings as arrays when wrapping `iosk --json` output.
 
 The schema extra may provide stricter shape checks, but the standard-library
 validators must continue to work without `jsonschema`.
