@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "io-safety-kit-for-oss"
-version = "0.3.1"
+version = "0.3.2"
 description = "Fail-closed input scopes, report-only workflows, and safe output promotion for AI-assisted OSS maintenance."
 readme = "README.md"
 requires-python = ">=3.9"
