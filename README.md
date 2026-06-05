@@ -230,8 +230,8 @@ not read private keys or call signing services.
 ## Project Status
 
 This repository is a public OSS project for maintainers who want auditable
-AI-assisted workflows. The current focus is a small active release line with
-examples, CI, issue templates, blocked-action regression fixtures,
+AI-assisted workflows. The stable v1 line focuses on a small report-only command
+surface with examples, CI, issue templates, blocked-action regression fixtures,
 signed-manifest digest and trust-policy fixtures, and maintainer automation
 recipes.
 

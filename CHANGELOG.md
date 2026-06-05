@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v1.0.0
+
+- Declare the first stable release line for the report-only `iosk` command
+  surface.
+- Update security support and package metadata for the v1 line.
+
 ## v0.3.2
 
 - Add v1 stability notes and an evidence bundle review guide.

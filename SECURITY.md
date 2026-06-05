@@ -2,8 +2,9 @@
 
 ## Supported Versions
 
-The project is pre-1.0. Security fixes target the latest commit on the default
-branch until a stable release line exists.
+Security fixes target the latest `v1.x` release and the default branch.
+Pre-1.0 releases are retained for historical reference, but they are not a
+supported security maintenance line.
 
 ## Reporting A Vulnerability
 
