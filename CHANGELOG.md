@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.3.2
+
 - Add v1 stability notes and an evidence bundle review guide.
 
 ## v0.3.1
