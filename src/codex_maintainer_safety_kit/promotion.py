@@ -44,6 +44,27 @@ PUBLIC_ARTIFACT_TYPES = {
     "release_note",
 }
 
+EVIDENCE_BUNDLE_ITEM_KINDS = {
+    "check",
+    "ci_run",
+    "doc",
+    "example",
+    "issue",
+    "pull_request",
+    "release",
+    "schema",
+    "test",
+}
+
+EVIDENCE_BUNDLE_REFERENCE_TYPES = {
+    "ci_run",
+    "issue",
+    "path",
+    "pull_request",
+    "release",
+    "url",
+}
+
 
 def _dict_value(value: Any) -> dict[str, Any]:
     return value if isinstance(value, dict) else {}
@@ -77,6 +98,32 @@ class ReviewEvidenceSummary:
 
 
 @dataclass
+class EvidenceBundleSummary:
+    status: str
+    bundle_id: str | None
+    item_count: int
+    reference_count: int
+    item_ids: list[str]
+    missing_reference_item_ids: list[str]
+    invalid_reference_targets: list[str]
+    malformed_item_count: int
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "status": self.status,
+            "present": self.status != "evidence_bundle_not_provided",
+            "ready_for_public_review": self.status == "evidence_bundle_ready",
+            "bundle_id": self.bundle_id,
+            "item_count": self.item_count,
+            "reference_count": self.reference_count,
+            "item_ids": self.item_ids,
+            "missing_reference_item_ids": self.missing_reference_item_ids,
+            "invalid_reference_targets": self.invalid_reference_targets,
+            "malformed_item_count": self.malformed_item_count,
+        }
+
+
+@dataclass
 class PromotionResult:
     passed: bool
     status: str
@@ -100,6 +147,9 @@ class PromotionResult:
             "external_publish_performed": False,
             "review_evidence": summarize_review_evidence(self.candidate).to_dict(),
         }
+        bundle_summary = summarize_evidence_bundle(self.candidate)
+        if bundle_summary.status != "evidence_bundle_not_provided":
+            data["evidence_bundle"] = bundle_summary.to_dict()
         if self.schema_validation is not None:
             data["schema_validation"] = self.schema_validation
         return data
@@ -140,6 +190,17 @@ def _truthy(value: Any) -> bool:
 
 def _list_values(value: Any) -> list[Any]:
     return value if isinstance(value, list) else []
+
+
+def _looks_private_reference(target: str) -> bool:
+    lowered = target.lower()
+    if lowered.startswith("file:") or target.startswith("/"):
+        return True
+    if len(target) > 2 and target[1] == ":" and target[2] in {"\\", "/"}:
+        return True
+    if "\\" in target:
+        return True
+    return any(marker in lowered for marker in FORBIDDEN_SOURCE_MARKERS)
 
 
 def summarize_review_evidence(candidate: dict[str, Any]) -> ReviewEvidenceSummary:
@@ -196,6 +257,77 @@ def summarize_review_evidence(candidate: dict[str, Any]) -> ReviewEvidenceSummar
         missing_evidence_check_ids=missing_evidence_check_ids,
         missing_id_check_indices=missing_id_check_indices,
         malformed_check_count=malformed_check_count,
+    )
+
+
+def summarize_evidence_bundle(candidate: dict[str, Any]) -> EvidenceBundleSummary:
+    if "evidence_bundle" not in candidate:
+        return EvidenceBundleSummary(
+            status="evidence_bundle_not_provided",
+            bundle_id=None,
+            item_count=0,
+            reference_count=0,
+            item_ids=[],
+            missing_reference_item_ids=[],
+            invalid_reference_targets=[],
+            malformed_item_count=0,
+        )
+
+    bundle = _dict_value(candidate.get("evidence_bundle"))
+    items = _list_values(bundle.get("items"))
+    item_ids: list[str] = []
+    missing_reference_item_ids: list[str] = []
+    invalid_reference_targets: list[str] = []
+    reference_count = 0
+    malformed_item_count = 0
+
+    for index, item in enumerate(items):
+        if not isinstance(item, dict):
+            malformed_item_count += 1
+            continue
+
+        item_id_value = item.get("id")
+        item_id = str(item_id_value) if item_id_value else f"missing:{index}"
+        if item_id_value:
+            item_ids.append(item_id)
+
+        references = _list_values(item.get("references"))
+        if not references:
+            missing_reference_item_ids.append(item_id)
+            continue
+
+        for reference_index, reference in enumerate(references):
+            if not isinstance(reference, dict):
+                malformed_item_count += 1
+                continue
+            target = reference.get("target")
+            if not target:
+                invalid_reference_targets.append(f"{item_id}:missing:{reference_index}")
+                continue
+            target_text = str(target)
+            reference_count += 1
+            if _looks_private_reference(target_text):
+                invalid_reference_targets.append(target_text)
+
+    ready = (
+        bool(bundle)
+        and _truthy(bundle.get("public_safe"))
+        and bool(bundle.get("bundle_id"))
+        and bool(items)
+        and malformed_item_count == 0
+        and not missing_reference_item_ids
+        and not invalid_reference_targets
+    )
+
+    return EvidenceBundleSummary(
+        status="evidence_bundle_ready" if ready else "evidence_bundle_blocked",
+        bundle_id=str(bundle.get("bundle_id")) if bundle.get("bundle_id") else None,
+        item_count=len(items),
+        reference_count=reference_count,
+        item_ids=item_ids,
+        missing_reference_item_ids=missing_reference_item_ids,
+        invalid_reference_targets=invalid_reference_targets,
+        malformed_item_count=malformed_item_count,
     )
 
 
@@ -285,6 +417,55 @@ def evaluate_promotion_candidate(
     if _truthy(plan.get("external_publish")):
         blockers.append("external_publish_not_supported")
 
+    if "evidence_bundle" in candidate:
+        bundle = _dict_value(candidate.get("evidence_bundle"))
+        bundle_summary = summarize_evidence_bundle(candidate)
+        if not bundle:
+            blockers.append("evidence_bundle_must_be_object")
+        if not _truthy(bundle.get("public_safe")):
+            blockers.append("evidence_bundle_not_public_safe")
+        if not bundle.get("bundle_id"):
+            blockers.append("evidence_bundle_id_required")
+
+        bundle_items = _list_values(bundle.get("items"))
+        if not bundle_items:
+            blockers.append("evidence_bundle_items_required")
+        for index, item in enumerate(bundle_items):
+            if not isinstance(item, dict):
+                blockers.append(f"evidence_bundle_item_not_object:{index}")
+                continue
+            item_id = item.get("id")
+            if not item_id:
+                blockers.append(f"evidence_bundle_item_missing_id:{index}")
+            if item.get("kind") not in EVIDENCE_BUNDLE_ITEM_KINDS:
+                blockers.append(f"unsupported_evidence_bundle_item_kind:{item.get('kind')}")
+            if not item.get("summary"):
+                blockers.append(f"evidence_bundle_item_missing_summary:{item_id}")
+            references = _list_values(item.get("references"))
+            if not references:
+                blockers.append(f"evidence_bundle_item_references_required:{item_id}")
+            for reference_index, reference in enumerate(references):
+                if not isinstance(reference, dict):
+                    blockers.append(
+                        f"evidence_bundle_reference_not_object:{item_id}:{reference_index}"
+                    )
+                    continue
+                reference_type = reference.get("type")
+                target = reference.get("target")
+                if reference_type not in EVIDENCE_BUNDLE_REFERENCE_TYPES:
+                    blockers.append(
+                        f"unsupported_evidence_bundle_reference_type:{reference_type}"
+                    )
+                if not target:
+                    blockers.append(
+                        f"evidence_bundle_reference_missing_target:{item_id}:{reference_index}"
+                    )
+                elif _looks_private_reference(str(target)):
+                    blockers.append(f"private_evidence_bundle_reference:{target}")
+
+        if bundle_summary.status != "evidence_bundle_ready":
+            blockers.append(bundle_summary.status)
+
     if use_schema:
         schema_validation = {
             "requested": True,
@@ -348,6 +529,9 @@ def render_promotion_report(candidate: dict[str, Any]) -> str:
     evidence = _dict_value(candidate.get("review_evidence"))
     evidence_summary = summarize_review_evidence(candidate)
     evidence_checks = _list_values(evidence.get("checks"))
+    bundle_summary = summarize_evidence_bundle(candidate)
+    evidence_bundle = _dict_value(candidate.get("evidence_bundle"))
+    bundle_items = _list_values(evidence_bundle.get("items"))
 
     lines = [
         "# Safe Output Promotion Report",
@@ -410,6 +594,25 @@ def render_promotion_report(candidate: dict[str, Any]) -> str:
                 )
     else:
         lines.append("- None")
+
+    if bundle_summary.status != "evidence_bundle_not_provided":
+        lines.extend(["", "## Evidence Bundle", ""])
+        lines.append(f"- Bundle status: `{bundle_summary.status}`")
+        lines.append(f"- Bundle id: `{bundle_summary.bundle_id or ''}`")
+        lines.append(f"- Bundle items: `{bundle_summary.item_count}`")
+        lines.append(f"- Public references: `{bundle_summary.reference_count}`")
+        if bundle_summary.invalid_reference_targets:
+            invalid = ", ".join(
+                f"`{target}`" for target in bundle_summary.invalid_reference_targets
+            )
+            lines.append(f"- Invalid references: {invalid}")
+        if bundle_items:
+            for item in bundle_items:
+                if isinstance(item, dict):
+                    lines.append(
+                        f"- `{item.get('id', '')}`: `{item.get('kind', '')}` - "
+                        f"{item.get('summary', '')}"
+                    )
 
     lines.extend(["", "## Blockers", ""])
     if result.blockers:

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add a public-safe evidence bundle example for promotion candidates.
+
 ## v0.3.0
 
 - Add optional JSON Schema validation for promotion candidates.

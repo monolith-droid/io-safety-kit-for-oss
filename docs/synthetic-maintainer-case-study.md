@@ -113,6 +113,8 @@ iosk promotion-check --candidate examples/promotion-candidate.json --json
 The candidate must avoid secrets, personal data, local paths, private approval
 IDs, private transcripts, service-specific operations, organization-only policy,
 real data that should be synthetic, and missing public-safe review evidence.
+It can also include a public-safe evidence bundle that references only public
+docs, examples, tests, issues, pull requests, releases, or CI records.
 
 When the generalized finding is ready for public discussion, the maintainer can
 open an issue with the `Dogfooding to public` issue template. That form asks for

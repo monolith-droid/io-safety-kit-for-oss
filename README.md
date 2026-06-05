@@ -186,6 +186,9 @@ CI and maintainers can review the record without parsing private logs. See
 When the optional schema extra is installed, `promotion-check --schema` also
 validates the candidate structure against
 `schemas/promotion-candidate.schema.json`.
+Promotion candidates may also include a public-safe `evidence_bundle` that
+groups docs, examples, tests, issues, pull requests, releases, or CI records
+without requiring private logs.
 
 ## Signed Manifest Digest Check
 
