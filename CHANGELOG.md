@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add optional JSON Schema validation for promotion candidates.
+
 ## v0.2.6
 
 - Add machine-readable review evidence summaries to promotion check output.

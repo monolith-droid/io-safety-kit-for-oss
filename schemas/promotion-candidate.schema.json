@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/monolith-droid/io-safety-kit-for-oss/schemas/promotion-candidate.schema.json",
+  "title": "I/O Safety Kit for OSS Promotion Candidate",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "candidate_id",
+    "source",
+    "summary",
+    "public_value",
+    "output_artifacts",
+    "privacy_review",
+    "generalization",
+    "review_evidence",
+    "promotion_plan"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "iosk.promotion.v1"
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["kind", "description"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["private_downstream", "local_workflow", "public_repo"]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "public_value": {
+      "type": "string",
+      "minLength": 1
+    },
+    "output_artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["type", "path"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "doc",
+              "example",
+              "fixture",
+              "schema",
+              "test",
+              "issue",
+              "pull_request",
+              "release_note"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "privacy_review": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "secrets_removed",
+        "personal_data_removed",
+        "local_paths_removed",
+        "private_context_removed",
+        "synthetic_example_used",
+        "source_markers"
+      ],
+      "properties": {
+        "secrets_removed": { "type": "boolean" },
+        "personal_data_removed": { "type": "boolean" },
+        "local_paths_removed": { "type": "boolean" },
+        "private_context_removed": { "type": "boolean" },
+        "synthetic_example_used": { "type": "boolean" },
+        "source_markers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "generalization": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "useful_to_other_maintainers",
+        "private_names_removed",
+        "can_be_tested_in_ci",
+        "public_problem_statement"
+      ],
+      "properties": {
+        "useful_to_other_maintainers": { "type": "boolean" },
+        "private_names_removed": { "type": "boolean" },
+        "can_be_tested_in_ci": { "type": "boolean" },
+        "public_problem_statement": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "review_evidence": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["reviewed_by_role", "checks"],
+      "properties": {
+        "reviewed_by_role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "required": ["id", "status", "evidence"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "status": {
+                "type": "string",
+                "const": "passed"
+              },
+              "evidence": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "promotion_plan": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["target", "maintainer_review", "external_publish"],
+      "properties": {
+        "target": {
+          "type": "string",
+          "enum": ["issue", "pull_request", "release"]
+        },
+        "maintainer_review": {
+          "type": "string",
+          "minLength": 1
+        },
+        "external_publish": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    }
+  }
+}
