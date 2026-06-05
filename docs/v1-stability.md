@@ -1,7 +1,7 @@
 # V1 Stability Notes
 
-This page describes the intended stability boundary for a `v1.0.0` release of
-I/O Safety Kit for OSS.
+This page describes the stability boundary for the `v1.x` release line of I/O
+Safety Kit for OSS.
 
 ## Primary CLI
 
@@ -20,7 +20,7 @@ Supported command surface:
 - `iosk run`
 - `iosk handoff`
 
-The commands are intended to remain report-only by default through the v1 line.
+The commands remain report-only by default through the v1 line.
 
 ## Legacy Aliases
 
@@ -29,7 +29,7 @@ adapters. They call the same implementation as `iosk`.
 
 Compatibility expectations:
 
-- Existing `msk` and `cmsk` invocations should keep working in `v1.0.0`.
+- Existing `msk` and `cmsk` invocations should keep working in the v1 line.
 - New public docs, examples, and tests should use `iosk`.
 - Any future removal of a legacy alias should require a later major release and
   a migration note.
