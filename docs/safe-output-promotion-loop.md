@@ -93,6 +93,8 @@ point to public repository-relative paths or public URLs, not local absolute
 paths, private approval records, transcripts, secrets, or provider credentials.
 When a bundle is present, `promotion-check` reports bundle status, item count,
 reference count, item ids, and invalid private-looking references.
+Use [Evidence bundle review](evidence-bundle-review.md) before opening the
+public issue or pull request.
 
 When `--schema` is used and `jsonschema` is installed, JSON output also includes
 `schema_validation` details for the public promotion candidate shape. The schema

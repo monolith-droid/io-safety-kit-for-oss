@@ -1,7 +1,7 @@
 # Contributing
 
-Thanks for considering a contribution. This project is early and intentionally
-small; clear safety boundaries matter more than broad automation.
+Thanks for considering a contribution. This project is intentionally small;
+clear safety boundaries matter more than broad automation.
 
 ## Good First Contributions
 

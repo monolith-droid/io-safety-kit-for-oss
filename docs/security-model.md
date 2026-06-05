@@ -7,7 +7,7 @@ boundaries around both input scope and output publication.
 
 - Fail closed.
 - Dry-run/report-only.
-- No command execution in the MVP.
+- No command execution in the core workflow.
 - No secret reads.
 - No repository visibility changes.
 - No protected-branch mutation.
@@ -39,7 +39,7 @@ optional and keeps private keys out of this project. See
 
 An agent workflow should begin from declared maintainer intent: repository,
 operation, targets, allowed actions, approval state, and output destination. The
-MVP treats anything outside that manifest as out of scope.
+gate treats anything outside that manifest as out of scope.
 
 ## Output Boundary
 
@@ -50,7 +50,7 @@ revealing secrets, personal data, local paths, or organization-only policy.
 
 ## Blocked Action Keywords
 
-The MVP blocks action strings containing high-risk verbs such as:
+The gate blocks action strings containing high-risk verbs such as:
 
 - `delete_repo`
 - `change_visibility`

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add v1 stability notes and an evidence bundle review guide.
+
 ## v0.3.1
 
 - Add a public-safe evidence bundle example for promotion candidates.
