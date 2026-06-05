@@ -2,10 +2,13 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
+from codex_maintainer_safety_kit import promotion as promotion_impl
 from io_safety_kit.promotion import (
     evaluate_promotion_candidate,
     load_candidate,
+    load_promotion_candidate_schema,
     render_promotion_report,
     summarize_review_evidence,
     write_promotion_report,
@@ -45,6 +48,63 @@ class PromotionTests(unittest.TestCase):
         self.assertEqual(
             result_data["review_evidence"]["check_ids"],
             ["synthetic-example", "public-artifacts", "side-effects"],
+        )
+
+    def test_packaged_schema_matches_public_schema(self):
+        packaged_schema = load_promotion_candidate_schema()
+        public_schema = json.loads(
+            (ROOT / "schemas" / "promotion-candidate.schema.json").read_text(
+                encoding="utf-8"
+            )
+        )
+
+        self.assertEqual(packaged_schema, public_schema)
+
+    def test_schema_validation_falls_back_without_jsonschema(self):
+        candidate = load_candidate(ROOT / "examples" / "promotion-candidate.json")
+
+        with patch.object(
+            promotion_impl, "_load_jsonschema_validator", return_value=None
+        ):
+            result = evaluate_promotion_candidate(candidate, use_schema=True)
+
+        self.assertTrue(result.passed, result.blockers)
+        self.assertIn(
+            "jsonschema_not_installed_schema_validation_skipped",
+            result.warnings,
+        )
+        self.assertEqual(
+            result.schema_validation,
+            {
+                "requested": True,
+                "available": False,
+                "schema": "schemas/promotion-candidate.schema.json",
+                "status": "schema_validation_skipped",
+                "errors": [],
+            },
+        )
+
+    def test_schema_validation_reports_schema_errors_when_available(self):
+        if promotion_impl._load_jsonschema_validator() is None:
+            self.skipTest("jsonschema is not installed")
+
+        candidate = load_candidate(ROOT / "examples" / "promotion-candidate.json")
+        candidate["schema_version"] = "legacy.promotion.v1"
+
+        result = evaluate_promotion_candidate(candidate, use_schema=True)
+        data = result.to_dict()
+
+        self.assertFalse(result.passed)
+        self.assertTrue(
+            any(
+                blocker.startswith("schema_error:schema_version:")
+                for blocker in result.blockers
+            )
+        )
+        self.assertEqual(data["schema_validation"]["status"], "schema_invalid")
+        self.assertEqual(
+            data["schema_validation"]["errors"][0]["path"],
+            "schema_version",
         )
 
     def test_secret_marker_blocks_candidate(self):

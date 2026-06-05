@@ -54,3 +54,4 @@ jobs:
           python -m pip install -e ".[schema]"
           iosk validate --manifest examples/pr-review-manifest.json --schema --json
           iosk validate --manifest examples/signed-pr-review-manifest.json --schema --json
+          iosk promotion-check --candidate examples/promotion-candidate.json --schema --json

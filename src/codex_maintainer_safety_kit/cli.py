@@ -112,7 +112,7 @@ def cmd_issue_triage(args: argparse.Namespace) -> int:
 
 def cmd_promotion_check(args: argparse.Namespace) -> int:
     candidate = load_candidate(args.candidate)
-    result = evaluate_promotion_candidate(candidate)
+    result = evaluate_promotion_candidate(candidate, use_schema=args.schema)
     markdown = render_promotion_report(candidate)
     if args.out:
         write_promotion_report(markdown, args.out)
@@ -217,6 +217,11 @@ def build_parser() -> argparse.ArgumentParser:
         "--candidate", required=True, help="Path to promotion candidate JSON."
     )
     promotion.add_argument("--out", default=None, help="Optional Markdown output path.")
+    promotion.add_argument(
+        "--schema",
+        action="store_true",
+        help="Also run optional JSON Schema validation when jsonschema is installed.",
+    )
     promotion.add_argument(
         "--json", action="store_true", help="Emit JSON output instead of Markdown."
     )

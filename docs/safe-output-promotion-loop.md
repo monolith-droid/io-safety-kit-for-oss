@@ -36,6 +36,13 @@ Render a local Markdown report:
 iosk promotion-check --candidate examples/promotion-candidate.json --out reports/promotion.md
 ```
 
+Add optional JSON Schema validation:
+
+```bash
+python -m pip install -e ".[schema]"
+iosk promotion-check --candidate examples/promotion-candidate.json --schema --json
+```
+
 The command is report-only. It does not create issues, publish releases, push
 branches, call external services, or inspect secret values.
 
@@ -78,6 +85,11 @@ the public-safe evidence record without parsing Markdown or exposing private
 logs. The summary reports the evidence status, reviewed role, check count,
 passed count, check ids, failed ids, missing evidence notes, missing id
 positions, and malformed check count.
+
+When `--schema` is used and `jsonschema` is installed, JSON output also includes
+`schema_validation` details for the public promotion candidate shape. The schema
+checks structure only; the semantic promotion checks still enforce privacy,
+generalization, report-only, and fail-closed rules.
 
 ## Blockers
 

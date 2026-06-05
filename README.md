@@ -74,12 +74,14 @@ python -m io_safety_kit validate --manifest examples/pr-review-manifest.json
 
 ## Optional JSON Schema Validation
 
-The default validator uses only the Python standard library. For stricter
-manifest shape checks, install the optional schema extra and pass `--schema`:
+The default validators use only the Python standard library. For stricter
+manifest and promotion candidate shape checks, install the optional schema extra
+and pass `--schema`:
 
 ```bash
 python -m pip install -e ".[schema]"
 iosk validate --manifest examples/pr-review-manifest.json --schema --json
+iosk promotion-check --candidate examples/promotion-candidate.json --schema --json
 ```
 
 When `jsonschema` is installed, schema errors are reported as fail-closed
@@ -180,6 +182,10 @@ checked without quoting private records. JSON output includes an evidence
 summary with check counts, check ids, failed ids, and missing evidence notes so
 CI and maintainers can review the record without parsing private logs. See
 [Safe output promotion loop](docs/safe-output-promotion-loop.md).
+
+When the optional schema extra is installed, `promotion-check --schema` also
+validates the candidate structure against
+`schemas/promotion-candidate.schema.json`.
 
 ## Signed Manifest Digest Check
 
