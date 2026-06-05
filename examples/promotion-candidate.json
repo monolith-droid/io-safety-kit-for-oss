@@ -55,6 +55,45 @@
       }
     ]
   },
+  "evidence_bundle": {
+    "bundle_id": "safe-output-loop-public-evidence-v1",
+    "public_safe": true,
+    "items": [
+      {
+        "id": "promotion-loop-doc",
+        "kind": "doc",
+        "summary": "The safe output promotion loop describes how maintainers strip private context before opening public issues or pull requests.",
+        "references": [
+          {
+            "type": "path",
+            "target": "docs/safe-output-promotion-loop.md"
+          }
+        ]
+      },
+      {
+        "id": "promotion-candidate-example",
+        "kind": "example",
+        "summary": "The synthetic promotion candidate keeps public-safe review evidence in a reusable JSON shape.",
+        "references": [
+          {
+            "type": "path",
+            "target": "examples/promotion-candidate.json"
+          }
+        ]
+      },
+      {
+        "id": "promotion-schema-test",
+        "kind": "test",
+        "summary": "The promotion tests cover candidate validation, evidence summaries, and optional schema validation.",
+        "references": [
+          {
+            "type": "path",
+            "target": "tests/test_promotion.py"
+          }
+        ]
+      }
+    ]
+  },
   "promotion_plan": {
     "target": "release",
     "maintainer_review": "Open a public issue, implement through PR, run CI, then release in the next tagged version.",

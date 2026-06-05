@@ -10,6 +10,7 @@ from io_safety_kit.promotion import (
     load_candidate,
     load_promotion_candidate_schema,
     render_promotion_report,
+    summarize_evidence_bundle,
     summarize_review_evidence,
     write_promotion_report,
 )
@@ -34,6 +35,8 @@ class PromotionTests(unittest.TestCase):
         self.assertIn("Evidence checks passed: `3/3`", report)
         self.assertIn("Reviewed by role: `maintainer`", report)
         self.assertIn("`synthetic-example`: `passed`", report)
+        self.assertIn("Evidence Bundle", report)
+        self.assertIn("Bundle status: `evidence_bundle_ready`", report)
 
         result_data = result.to_dict()
         self.assertEqual(
@@ -49,6 +52,12 @@ class PromotionTests(unittest.TestCase):
             result_data["review_evidence"]["check_ids"],
             ["synthetic-example", "public-artifacts", "side-effects"],
         )
+        self.assertEqual(
+            result_data["evidence_bundle"]["status"],
+            "evidence_bundle_ready",
+        )
+        self.assertEqual(result_data["evidence_bundle"]["item_count"], 3)
+        self.assertEqual(result_data["evidence_bundle"]["reference_count"], 3)
 
     def test_packaged_schema_matches_public_schema(self):
         packaged_schema = load_promotion_candidate_schema()
@@ -183,6 +192,48 @@ class PromotionTests(unittest.TestCase):
         self.assertEqual(summary.malformed_check_count, 1)
         self.assertEqual(summary.missing_id_check_indices, [0])
         self.assertEqual(summary.missing_evidence_check_ids, ["missing-note"])
+
+    def test_evidence_bundle_summary_tracks_public_references(self):
+        candidate = load_candidate(ROOT / "examples" / "promotion-candidate.json")
+
+        summary = summarize_evidence_bundle(candidate)
+
+        self.assertEqual(summary.status, "evidence_bundle_ready")
+        self.assertEqual(
+            summary.bundle_id,
+            "safe-output-loop-public-evidence-v1",
+        )
+        self.assertEqual(summary.item_count, 3)
+        self.assertEqual(summary.reference_count, 3)
+        self.assertEqual(
+            summary.item_ids,
+            [
+                "promotion-loop-doc",
+                "promotion-candidate-example",
+                "promotion-schema-test",
+            ],
+        )
+
+    def test_private_evidence_bundle_reference_blocks_candidate(self):
+        candidate = load_candidate(ROOT / "examples" / "promotion-candidate.json")
+        candidate["evidence_bundle"]["items"][0]["references"][0]["target"] = (
+            "C:\\private\\approval.txt"
+        )
+
+        result = evaluate_promotion_candidate(candidate)
+        summary = summarize_evidence_bundle(candidate)
+
+        self.assertFalse(result.passed)
+        self.assertIn(
+            "private_evidence_bundle_reference:C:\\private\\approval.txt",
+            result.blockers,
+        )
+        self.assertIn("evidence_bundle_blocked", result.blockers)
+        self.assertEqual(summary.status, "evidence_bundle_blocked")
+        self.assertEqual(
+            summary.invalid_reference_targets,
+            ["C:\\private\\approval.txt"],
+        )
 
     def test_malformed_nested_values_block_without_crashing(self):
         candidate = load_candidate(ROOT / "examples" / "promotion-candidate.json")

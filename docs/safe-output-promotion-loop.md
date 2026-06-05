@@ -86,6 +86,14 @@ logs. The summary reports the evidence status, reviewed role, check count,
 passed count, check ids, failed ids, missing evidence notes, missing id
 positions, and malformed check count.
 
+Promotion candidates can also include an optional `evidence_bundle`. A bundle
+groups public-safe docs, examples, tests, schemas, issues, pull requests,
+releases, or CI records into a portable review record. Bundle references should
+point to public repository-relative paths or public URLs, not local absolute
+paths, private approval records, transcripts, secrets, or provider credentials.
+When a bundle is present, `promotion-check` reports bundle status, item count,
+reference count, item ids, and invalid private-looking references.
+
 When `--schema` is used and `jsonschema` is installed, JSON output also includes
 `schema_validation` details for the public promotion candidate shape. The schema
 checks structure only; the semantic promotion checks still enforce privacy,
