@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.3.0
+
 - Add optional JSON Schema validation for promotion candidates.
 
 ## v0.2.6
