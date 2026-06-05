@@ -51,8 +51,8 @@ post comments or mutate GitHub state.
 ## Issue Triage
 
 Issue triage can classify open issues, propose labels, identify duplicates, and
-draft maintainer notes. The MVP treats label mutation as outside scope; it
-produces a report that a maintainer can apply manually.
+draft maintainer notes. The current implementation treats label mutation as
+outside scope; it produces a report that a maintainer can apply manually.
 
 Render the report locally:
 
@@ -74,9 +74,9 @@ approval.
 ## Security And Dependency Review
 
 Security review must be limited to repositories the maintainer owns or is
-authorized to administer. The MVP supports report-only review of dependency
-files and workflow configuration. It does not probe external systems, read
-secrets, or scan repositories outside the manifest.
+authorized to administer. The current implementation supports report-only
+review of dependency files and workflow configuration. It does not probe
+external systems, read secrets, or scan repositories outside the manifest.
 
 ## Suggested Agent Workflow Use
 
@@ -95,6 +95,9 @@ exercise first.
 For an end-to-end synthetic example, see
 [Synthetic maintainer workflow case study](synthetic-maintainer-case-study.md).
 
+For the stable command surface and legacy command aliases, see
+[V1 stability notes](v1-stability.md).
+
 ## Downstream Adapters
 
 Maintainers can use this project from private downstream adapters without
@@ -106,3 +109,7 @@ should stay outside this repository unless they can be safely generalized.
 See [Downstream dogfooding](downstream-dogfooding.md) for the promotion
 checklist used to decide which private findings should become public issues,
 fixtures, docs, or PRs.
+
+When a promotion candidate includes an evidence bundle, review it with
+[Evidence bundle review](evidence-bundle-review.md) before opening the public
+issue or pull request.

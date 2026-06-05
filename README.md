@@ -11,11 +11,11 @@ The project is agent-agnostic by design. Codex workflows are the first concrete
 reference use case, while the manifest, gate, report, and promotion patterns are
 intended for OSS maintenance with coding agents more broadly.
 
-The current MVP is intentionally report-only. It validates approval manifests,
-checks whether a requested maintainer workflow is inside the approved scope, and
-produces auditable JSON/Markdown reports. It does not execute shell commands,
-read secrets, change repository settings, merge pull requests, or publish
-anything.
+The current release line is intentionally report-only. It validates approval
+manifests, checks whether a requested maintainer workflow is inside the approved
+scope, and produces auditable JSON/Markdown reports. It does not execute shell
+commands, read secrets, change repository settings, merge pull requests, or
+publish anything.
 
 ## Why This Exists
 
@@ -36,8 +36,8 @@ This project gives maintainers a compact pattern:
 
 Input safety means the agent workflow starts from a declared scope: repository,
 operation, targets, approval state, allowed actions, and blocked high-risk
-verbs. The MVP does not read secrets, scan unrelated repositories, or execute
-commands.
+verbs. The core workflow does not read secrets, scan unrelated repositories, or
+execute commands.
 
 Output safety means the generated workflow result stays reviewable before it
 becomes public. Reports remain local by default, GitHub mutation is disabled,
@@ -62,9 +62,10 @@ iosk run --job examples/maintainer-job.json --json
 iosk handoff --report examples/sample-run-report.json --out reports/handoff.md
 ```
 
-The `iosk` command is the preferred CLI name. The older `msk` and `cmsk`
-commands remain available during the v0.1.x release line for compatibility with
-early examples and adapters.
+The `iosk` command is the primary supported CLI name. The older `msk` and
+`cmsk` commands remain compatibility aliases for early examples and adapters,
+but new public docs and automation should use `iosk`. See
+[V1 stability notes](docs/v1-stability.md).
 
 You can also run the module directly:
 
@@ -122,7 +123,7 @@ iosk gate --manifest tests/fixtures/blocked_actions/read_secret.json --json
 - Requested actions avoid blocked high-risk verbs such as secret access,
   repository visibility changes, destructive cleanup, or protected-branch
   mutation.
-- The command runner remains dry-run/report-only in this MVP.
+- The command runner remains dry-run/report-only in the core workflow.
 
 ## Example Workflows
 
@@ -189,6 +190,8 @@ validates the candidate structure against
 Promotion candidates may also include a public-safe `evidence_bundle` that
 groups docs, examples, tests, issues, pull requests, releases, or CI records
 without requiring private logs.
+See [Evidence bundle review](docs/evidence-bundle-review.md) for the maintainer
+checklist.
 
 ## Signed Manifest Digest Check
 
@@ -226,9 +229,9 @@ not read private keys or call signing services.
 
 ## Project Status
 
-This repository is an early public OSS project for maintainers who want
-auditable AI-assisted workflows. The current focus is a small active release
-line with examples, CI, issue templates, blocked-action regression fixtures,
+This repository is a public OSS project for maintainers who want auditable
+AI-assisted workflows. The current focus is a small active release line with
+examples, CI, issue templates, blocked-action regression fixtures,
 signed-manifest digest and trust-policy fixtures, and maintainer automation
 recipes.
 
@@ -244,15 +247,17 @@ See:
 - [Maintainer workflows](docs/maintainer-workflows.md)
 - [Downstream dogfooding](docs/downstream-dogfooding.md)
 - [Safe output promotion loop](docs/safe-output-promotion-loop.md)
+- [Evidence bundle review](docs/evidence-bundle-review.md)
 - [Synthetic maintainer workflow case study](docs/synthetic-maintainer-case-study.md)
 - [Signed approval manifests](docs/signed-approval-manifests.md)
+- [V1 stability notes](docs/v1-stability.md)
 
 ## Non-Goals
 
 - This is not a replacement for GitHub permissions or branch protection.
 - This is not a secret scanner or vulnerability scanner.
-- This MVP does not execute commands.
-- This MVP does not grant authorization by itself; it only verifies that a
+- The core workflow does not execute commands.
+- This project does not grant authorization by itself; it only verifies that a
   manifest says authorization exists and reports whether the gate would allow
   the workflow.
 

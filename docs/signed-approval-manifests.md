@@ -1,8 +1,8 @@
 # Signed Approval Manifests
 
 This note sketches how I/O Safety Kit for OSS can support signed approval
-manifests without making the MVP depend on a specific signing provider, secret
-store, or key format.
+manifests without making the core workflow depend on a specific signing
+provider, secret store, or key format.
 
 The current approval manifest is still treated as scope evidence, not as proof
 of authorization by itself. A future signed manifest path should make that
@@ -45,8 +45,8 @@ schema version explicitly adds them.
 
 ## Where Signatures Live
 
-The MVP should avoid embedding private signing details in the manifest. A future
-schema can support either of these public metadata shapes:
+The core workflow should avoid embedding private signing details in the
+manifest. A future schema can support either of these public metadata shapes:
 
 ```json
 {
@@ -181,7 +181,7 @@ fails closed when:
 
 - This design does not choose a signing provider.
 - This design does not introduce private keys, tokens, or signing services.
-- This design does not make the MVP execute approved commands.
+- This design does not make the core workflow execute approved commands.
 - This design does not replace GitHub permissions, branch protection, code owner
   review, or maintainer judgment.
 
