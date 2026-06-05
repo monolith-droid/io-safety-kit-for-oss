@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v1.1.0
+
 - Add downstream adapter guidance for preserving JSON array fields in wrappers.
 
 ## v1.0.0
