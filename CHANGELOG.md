@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.3.1
+
 - Add a public-safe evidence bundle example for promotion candidates.
 
 ## v0.3.0
