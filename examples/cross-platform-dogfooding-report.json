@@ -1,0 +1,93 @@
+{
+  "schema_version": "iosk.cross_platform_dogfooding.v1",
+  "report_id": "cross-platform-dogfooding-synthetic-v1",
+  "generated_at": "2026-06-12T00:00:00+00:00",
+  "mode": "report_only",
+  "repository": "monolith-droid/io-safety-kit-for-oss",
+  "passed": true,
+  "status": "cross_platform_dogfooding_ready",
+  "summary": "Synthetic cross-platform dogfooding report for turning private adapter lessons into public-safe OSS improvements.",
+  "lanes": [
+    {
+      "lane_id": "implementation-lane",
+      "platform_role": "implementation",
+      "platform_family": "mac-or-unix-like",
+      "public_safe_summary": "Design adapter logic, handoff files, and synthetic fixtures without copying private synced folders or vault data.",
+      "report_only": true,
+      "side_effects": {
+        "command_executed": false,
+        "external_publish_performed": false,
+        "scheduler_mutated": false,
+        "worker_dispatched": false,
+        "secret_values_read": false
+      },
+      "public_artifacts": [
+        "docs/cross-platform-dogfooding.md",
+        "examples/cross-platform-dogfooding-report.json"
+      ],
+      "private_boundaries": [
+        "real_synced_folder_paths",
+        "private_vault_notes",
+        "approval_records",
+        "account_details",
+        "host_specific_routes"
+      ],
+      "promotion_candidates": [
+        "synthetic_adapter_lesson",
+        "handoff_shape_guidance",
+        "report_only_write_smoke_pattern"
+      ],
+      "blockers": [],
+      "warnings": []
+    },
+    {
+      "lane_id": "operations-lane",
+      "platform_role": "operations",
+      "platform_family": "windows-or-scheduled-host",
+      "public_safe_summary": "Run repeated report-only operational checks and preserve degraded status when the local runner cannot start.",
+      "report_only": true,
+      "side_effects": {
+        "command_executed": false,
+        "external_publish_performed": false,
+        "scheduler_mutated": false,
+        "worker_dispatched": false,
+        "secret_values_read": false
+      },
+      "public_artifacts": [
+        "docs/downstream-dogfooding.md",
+        "docs/cross-platform-dogfooding.md"
+      ],
+      "private_boundaries": [
+        "local_task_names",
+        "runtime_state_paths",
+        "machine_specific_health_logs",
+        "private_adapter_scripts",
+        "local_user_paths"
+      ],
+      "promotion_candidates": [
+        "array_preservation_guidance",
+        "degraded_runner_status_pattern",
+        "report_only_scheduler_boundary"
+      ],
+      "blockers": [],
+      "warnings": [
+        "degraded_status_must_not_claim_unrun_checks"
+      ]
+    }
+  ],
+  "public_promotion": {
+    "allowed_artifact_types": [
+      "doc",
+      "example",
+      "test",
+      "schema",
+      "issue",
+      "release_note"
+    ],
+    "requires_synthetic_example": true,
+    "requires_maintainer_review": true,
+    "external_publish_performed": false
+  },
+  "blockers": [],
+  "warnings": []
+}
