@@ -141,6 +141,8 @@ iosk gate --manifest tests/fixtures/blocked_actions/read_secret.json --json
 - `examples/maintainer-job.json`: report-only job plan using those manifests.
 - `examples/promotion-candidate.json`: check whether private/downstream output
   is safe to promote publicly.
+- `examples/cross-platform-dogfooding-report.json`: synthetic downstream
+  dogfooding report for implementation and operations lanes.
 
 ## PR Review Renderer
 
@@ -246,6 +248,7 @@ See:
 - [Security model](docs/security-model.md)
 - [Maintainer workflows](docs/maintainer-workflows.md)
 - [Downstream dogfooding](docs/downstream-dogfooding.md)
+- [Cross-platform dogfooding](docs/cross-platform-dogfooding.md)
 - [Safe output promotion loop](docs/safe-output-promotion-loop.md)
 - [Evidence bundle review](docs/evidence-bundle-review.md)
 - [Synthetic maintainer workflow case study](docs/synthetic-maintainer-case-study.md)

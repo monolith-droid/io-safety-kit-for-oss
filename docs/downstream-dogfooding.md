@@ -125,3 +125,6 @@ The goal of downstream dogfooding is not to claim broad adoption before it
 exists. The goal is to show that the public OSS core is being exercised by real
 maintenance workflows, with the resulting improvements converted into public,
 reviewable issues, tests, documentation, and releases.
+
+For a synthetic two-lane example that separates implementation work from
+operational use, see [Cross-platform dogfooding](cross-platform-dogfooding.md).

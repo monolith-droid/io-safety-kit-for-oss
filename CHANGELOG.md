@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## v1.2.0
+
+- Add a cross-platform downstream dogfooding guide and synthetic report fixture
+  covering implementation and operations lanes.
+
 ## v1.1.0
 
 - Add downstream adapter guidance for preserving JSON array fields in wrappers.
