@@ -65,6 +65,9 @@ Within the v1 line, maintainers should be able to rely on:
 - optional JSON Schema validation remaining optional.
 - downstream adapters preserving machine-readable JSON fields such as blockers
   and warnings as arrays when wrapping `iosk --json` output.
+- unexpected command errors under `iosk --json` returning a public-safe JSON
+  object with array-valued `blockers` and `warnings`, without raw exception
+  messages or input paths.
 - downstream dogfooding examples that keep implementation-lane and
   operations-lane lessons public-safe and synthetic.
 

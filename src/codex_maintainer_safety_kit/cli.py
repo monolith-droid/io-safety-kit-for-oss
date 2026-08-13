@@ -36,6 +36,19 @@ def emit(data: dict[str, Any], as_json: bool) -> None:
             print(f"  - {warning}")
 
 
+def _build_command_error(args: argparse.Namespace, exc: Exception) -> dict[str, Any]:
+    """Build a public-safe, machine-readable result for unexpected CLI errors."""
+    error_type = type(exc).__name__
+    return {
+        "passed": False,
+        "status": "command_error",
+        "blockers": [f"command_error:{error_type}"],
+        "warnings": [],
+        "command": getattr(args, "command", None),
+        "error_type": error_type,
+    }
+
+
 def cmd_validate(args: argparse.Namespace) -> int:
     manifest = load_json(args.manifest)
     result = validate_manifest(manifest, use_schema=args.schema).to_dict()
@@ -259,5 +272,8 @@ def main(argv: list[str] | None = None) -> int:
     try:
         return int(args.func(args))
     except Exception as exc:
-        print(f"error: {exc}", file=sys.stderr)
+        if getattr(args, "json", False):
+            emit(_build_command_error(args, exc), True)
+        else:
+            print(f"error: {type(exc).__name__}", file=sys.stderr)
         return 99

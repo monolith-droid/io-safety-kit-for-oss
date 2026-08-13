@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Keep unexpected `--json` command failures machine-readable and public-safe,
+  with array-valued blockers and warnings and no raw exception details.
+
 ## v1.2.0
 
 - Add a cross-platform downstream dogfooding guide and synthetic report fixture
