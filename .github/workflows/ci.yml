@@ -7,6 +7,8 @@ on:
       - main
       - master
       - "codex/**"
+    tags:
+      - "v*"
 
 permissions:
   contents: read
@@ -31,7 +33,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install package
-        run: python -m pip install -e .
+        run: python -m pip install -e ".[schema]"
 
       - name: Compile
         run: python -m compileall -q src tests
@@ -55,3 +57,9 @@ jobs:
           iosk validate --manifest examples/pr-review-manifest.json --schema --json
           iosk validate --manifest examples/signed-pr-review-manifest.json --schema --json
           iosk promotion-check --candidate examples/promotion-candidate.json --schema --json
+
+      - name: Build and install wheel smoke
+        run: |
+          python -m pip wheel . --no-deps --wheel-dir dist
+          python -c "import glob, subprocess, sys; wheels = glob.glob('dist/*.whl'); assert len(wheels) == 1, wheels; subprocess.check_call([sys.executable, '-m', 'pip', 'install', '--force-reinstall', '--no-deps', wheels[0]])"
+          iosk validate --manifest examples/pr-review-manifest.json --json

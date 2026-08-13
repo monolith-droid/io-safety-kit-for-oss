@@ -23,7 +23,16 @@ from .trust_policy import evaluate_trust_policy
 
 def emit(data: dict[str, Any], as_json: bool) -> None:
     if as_json:
-        print(json.dumps(data, indent=2, sort_keys=True))
+        normalized = dict(data)
+        normalized.setdefault("passed", False)
+        normalized.setdefault("status", "unknown")
+        normalized.setdefault("blockers", [])
+        normalized.setdefault("warnings", [])
+        if not isinstance(normalized["blockers"], list):
+            normalized["blockers"] = [str(normalized["blockers"])]
+        if not isinstance(normalized["warnings"], list):
+            normalized["warnings"] = [str(normalized["warnings"])]
+        print(json.dumps(normalized, indent=2, sort_keys=True))
         return
     print(f"status: {data.get('status')}")
     if data.get("blockers"):

@@ -72,6 +72,11 @@ JSON envelope. `blockers` and `warnings` remain arrays, the process exits with
 code `99`, and raw exception messages, input contents, and local paths are not
 included.
 
+All JSON command results share a stable minimum envelope: boolean `passed`,
+string `status`, and array-valued `blockers` and `warnings`. Command-specific
+fields remain available alongside that envelope. See
+[`command-result.schema.json`](schemas/command-result.schema.json).
+
 You can also run the module directly:
 
 ```bash
