@@ -68,6 +68,9 @@ Within the v1 line, maintainers should be able to rely on:
 - unexpected command errors under `iosk --json` returning a public-safe JSON
   object with array-valued `blockers` and `warnings`, without raw exception
   messages or input paths.
+- every `iosk --json` result preserving the common `passed`, `status`,
+  `blockers`, and `warnings` envelope described by
+  `schemas/command-result.schema.json`.
 - downstream dogfooding examples that keep implementation-lane and
   operations-lane lessons public-safe and synthetic.
 

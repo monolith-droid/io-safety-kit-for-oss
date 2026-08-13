@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/monolith-droid/io-safety-kit-for-oss/schemas/command-result.schema.json",
+  "title": "I/O Safety Kit for OSS Command Result",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["passed", "status", "blockers", "warnings"],
+  "properties": {
+    "passed": {"type": "boolean"},
+    "status": {"type": "string", "minLength": 1},
+    "blockers": {"type": "array", "items": {"type": "string"}},
+    "warnings": {"type": "array", "items": {"type": "string"}}
+  }
+}

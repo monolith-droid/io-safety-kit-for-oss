@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Add a common JSON command result schema and normalize every `--json` result
+  to boolean `passed`, string `status`, and array-valued `blockers` and
+  `warnings`.
+- Add wheel install smoke coverage and enable CI for version tag pushes.
+
 ## v1.2.1
 
 - Keep unexpected `--json` command failures machine-readable and public-safe,
