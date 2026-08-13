@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v1.3.0
+
 - Add a common JSON command result schema and normalize every `--json` result
   to boolean `passed`, string `status`, and array-valued `blockers` and
   `warnings`.
