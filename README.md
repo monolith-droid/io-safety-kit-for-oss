@@ -67,6 +67,11 @@ The `iosk` command is the primary supported CLI name. The older `msk` and
 but new public docs and automation should use `iosk`. See
 [V1 stability notes](docs/v1-stability.md).
 
+When `--json` is requested, unexpected command errors also use a public-safe
+JSON envelope. `blockers` and `warnings` remain arrays, the process exits with
+code `99`, and raw exception messages, input contents, and local paths are not
+included.
+
 You can also run the module directly:
 
 ```bash
