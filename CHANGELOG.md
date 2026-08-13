@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v1.2.1
+
 - Keep unexpected `--json` command failures machine-readable and public-safe,
   with array-valued blockers and warnings and no raw exception details.
 
